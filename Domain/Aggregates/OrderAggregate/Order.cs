@@ -7,71 +7,60 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Common;
+using Domain.Events;
 
 namespace Domain.Aggregates.OrderAggregate
 {
     public class Order : Entity, IAggregateRoot
     {
-        public Guid FlightId { get; private set; }
-        public DateTimeOffset OrderDate { get; private set;  } = DateTimeOffset.Now;
-        public int NoOfSeats {  get; private set; }
-        public string ClassName {  get; private set; }
+        public Guid OrderId { get; set; }
+        public Guid CustomerId { get; set; }
+        public DateTimeOffset OrderDate { get; set; }
+        public decimal Total { get; set; }
+        public OrderStatus Status { get; set; }
         
-        private List<Flight> _flight;
-        private List<Address> _address;
-        private List<Passenger> _passengers;
-        
-        public IReadOnlyCollection<Flight> flight => _flight;
-        
-        public IReadOnlyCollection<Address> Address => _address;
-        public IReadOnlyCollection<Passenger> Passengers => _passengers;
-        
-        private Order()
+        private readonly List<OrderItems> _orderItems;
+        public IReadOnlyCollection<OrderItems> OrderItems => _orderItems.AsReadOnly();
+
+        public Order() { }
+        public Order(Guid customerId, decimal total)
         {
-            _passengers = new List<Passenger>();
-            _address = new List<Address>();
+            OrderId = Guid.NewGuid();
+            CustomerId = customerId;
+            OrderDate = DateTimeOffset.Now;
+            Total = total;
+            Status = OrderStatus.New;
         }
 
-        public Order(Guid flightId, int noOfSeats, string className) : this()
+        public void AddOrderItem(Guid flightId, int noOfSeats, decimal price)
         {
-            FlightId = flightId;
-            NoOfSeats = noOfSeats;
-            ClassName = className;
+            var orderItem = new OrderItems(flightId, noOfSeats, price);
+            _orderItems.Add(orderItem); 
+            
+            AddDomainEvent(new OrderItemAddedEvent(flightId, noOfSeats, price));
         }
 
-        public void AddOrder(Guid flightId,  string serviceClass, int noOfSeats, Passenger customer, Address customerAddress)
+        public void UpdateOrderItemQuantity(Guid flightId, int noOfSeats)
         {
-            var bookedFlight = GetFlight(flightId, serviceClass);
-            _flight.Add(bookedFlight);
-            _passengers.Add(customer);
-            _address.Add(customerAddress);
-        }
-
-        private decimal CalculateRate(decimal rate, int noOfSeats)
-        {
-            return rate * noOfSeats;
-        }
-
-        public void OrderPlaced(Guid flightId, string serviceClass, int noOfSeats)
-        {
-            //var bookedFlight = GetFlight(flightId, serviceClass);
-            //bookedFlight.MutateRateAvailability(serviceClass, noOfSeats);
-
-            //Domain Event
-        }
-
-
-
-        private Flight GetFlight (Guid flightId, string serviceClass)
-        {
-            var bookedFlight = _flight.SingleOrDefault(f => f.Id == flightId); 
-
-            if (bookedFlight == null)
+            var orderItem = _orderItems.SingleOrDefault(x => x.FlightId == flightId);
+            
+            if (orderItem != null)
             {
-                throw new ArgumentException("This flight does exists in the provided flightId");
+                orderItem.UpdateSeatCount(noOfSeats);
+                
+                AddDomainEvent(new OrderItemQuantityUpdatedEvent(flightId, noOfSeats));
             }
+        }
 
-            return bookedFlight;
+        public void PlaceOrder()
+        {
+            if (Status == OrderStatus.New)
+            {
+                Status = OrderStatus.Placed;
+                
+                AddDomainEvent(new OrderPlacedEvent(OrderId));
+            }
         }
     }
 }

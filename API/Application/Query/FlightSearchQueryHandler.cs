@@ -25,25 +25,21 @@ public class FlightSearchQueryHandler : IRequestHandler<FlightSearchQuery, List<
     {
         // Filter out flights that doesn't  have price
         var flights = await _flightRepository.SearchAsync(request.DestinationAirPortId);
-
         // Get destination (arrival) airport code
         var destinationAirport = await GetAirport(request.DestinationAirPortId);
-
+        
         var view = new List<FlightViewModel>();
-
         foreach (var flight in flights)
         {
             var deptAirport = await GetAirport(flight.DestinationAirportId);
-
-            var lowestRate = flight.Rates.Where(n => n.Price.Value != 0).OrderBy(x => x.Price).FirstOrDefault();
-
+            
             var searchResult = new FlightViewModel
             {
                 ArrivalAirportCode = destinationAirport.Code,
                 DepartureAirportCode = deptAirport.Code,
                 DepartureDate = flight.Departure,
                 ArrivalDateTime = flight.Arrival,
-                LowestPrice = lowestRate.Price.Value
+                LowestPrice = flight.Rates.Select(x => x.Price.Value).Min()
             };
 
             view.Add(searchResult);

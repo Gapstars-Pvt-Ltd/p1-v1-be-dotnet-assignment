@@ -13,7 +13,7 @@ namespace Infrastructure
                 {
                     npgsqlOptions.MigrationsAssembly(migrationsAssemblyName);
                 });
-            });
+            }, ServiceLifetime.Transient);
         }
     }
 }

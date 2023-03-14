@@ -29,17 +29,7 @@ public class FlightsController : ControllerBase
     [Route("Search")]
     public async Task<IActionResult> GetAvailableFlights(Guid destinationAirPortId)
     {
-        try
-        {
-            _flightSearchQuery.DestinationAirPortId = destinationAirPortId;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Some thing went wrong.");
-            
-            return BadRequest();
-        }
-
+        _flightSearchQuery.DestinationAirPortId = destinationAirPortId;
         return Ok(await _mediator.Send(_flightSearchQuery));
     }
 }

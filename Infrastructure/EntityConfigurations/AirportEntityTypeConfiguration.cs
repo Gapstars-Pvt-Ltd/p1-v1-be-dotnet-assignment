@@ -1,4 +1,5 @@
 using Domain.Aggregates.AirportAggregate;
+using Infrastructure.EntityConfigurations.BaseEntity;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.EntityConfigurations

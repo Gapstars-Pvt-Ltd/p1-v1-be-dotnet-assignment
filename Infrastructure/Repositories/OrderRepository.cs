@@ -23,14 +23,34 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public Order Add(Order booking)
+        public Order GetById(Guid id)
         {
-            return _context.Orders.Add(booking).Entity;
+            throw new NotImplementedException();
+        }
+
+        public Order Add(Order order)
+        {
+            return _context.Orders.Add(order).Entity;
         }
 
         public void Update(Order booking)
         {
             _context.Orders.Update(booking);
+        }
+
+        public OrderItems GetOrderItemById(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddOrderItem(OrderItems orderItem)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateOrderItem(OrderItems orderItem)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<Order> GetOrder(Guid orderId)

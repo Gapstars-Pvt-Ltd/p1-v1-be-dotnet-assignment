@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.Aggregates.AirportAggregate;
 using Domain.Aggregates.FlightAggregate;
 using Domain.SeedWork;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +40,7 @@ public class FlightRepository : IFlightRepository
     {
         // Using Lazy loading
         var queryableResult = _context.Flights
+            .Include(x => x.Rates)
             .Where(f => f.DestinationAirportId == destinationAirportCode)
             .AsQueryable();
 
