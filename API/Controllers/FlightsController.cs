@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using API.ApiResponses;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,6 @@ using API.Application.ViewModels;
 namespace API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
 public class FlightsController : ControllerBase
 {
     private readonly ILogger<FlightsController> _logger;
@@ -26,10 +26,11 @@ public class FlightsController : ControllerBase
     }
 
     [HttpGet]
-    [Route("Search")]
-    public async Task<IActionResult> GetAvailableFlights(Guid destinationAirPortId)
+    [Route("Flight/Search")]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    public async Task<IActionResult> GetAvailableFlights([FromQuery]Guid arrivingAirport)
     {
-        _flightSearchQuery.DestinationAirPortId = destinationAirPortId;
+        _flightSearchQuery.DestinationAirPortId = Guid.Parse(Request.Query["arrivingAirport"].ToString());
         return Ok(await _mediator.Send(_flightSearchQuery));
     }
 }

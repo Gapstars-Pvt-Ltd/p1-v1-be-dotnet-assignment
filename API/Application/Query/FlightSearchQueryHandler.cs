@@ -23,12 +23,14 @@ public class FlightSearchQueryHandler : IRequestHandler<FlightSearchQuery, List<
 
     public async Task<List<FlightViewModel>> Handle(FlightSearchQuery request, CancellationToken cancellationToken)
     {
-        // Filter out flights that doesn't  have price
+        // Filter out flights that doesn't have price
         var flights = await _flightRepository.SearchAsync(request.DestinationAirPortId);
+        
         // Get destination (arrival) airport code
         var destinationAirport = await GetAirport(request.DestinationAirPortId);
         
         var view = new List<FlightViewModel>();
+        
         foreach (var flight in flights)
         {
             var deptAirport = await GetAirport(flight.DestinationAirportId);

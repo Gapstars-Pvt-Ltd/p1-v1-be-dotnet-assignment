@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure
@@ -13,7 +14,16 @@ namespace Infrastructure
                 {
                     npgsqlOptions.MigrationsAssembly(migrationsAssemblyName);
                 });
-            }, ServiceLifetime.Scoped);
+            }, ServiceLifetime.Transient);
+
+            // string connectionString, string migrationsAssemblyName
+
+            //services.AddDbContext<FlightsContext>(options =>
+            //    options.UseNpgsql(
+            //        configuration.ToString(),
+            //        b => b.MigrationsAssembly(typeof(FlightsContext).Assembly.FullName)));
+
+            //return services.AddScoped<FlightsContext>(provider => provider.GetService<FlightsContext>());
         }
     }
 }

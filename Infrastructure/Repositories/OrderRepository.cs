@@ -13,22 +13,19 @@ namespace Infrastructure.Repositories
     {
         private readonly FlightsContext _context;
 
-        public IUnitOfWork UnitOfWork
-        {
-            get { return _context; }
-        }
+        public IUnitOfWork UnitOfWork => _context;
 
         public OrderRepository(FlightsContext context)
         {
             _context = context;
         }
 
-        public Order GetById(Guid id)
+        public async Task<Order> GetById(Guid id)
         {
             return _context.Orders.FirstOrDefault(o => o.Id == id);
         }
 
-        public Order Add(Order order)
+        public async Task<Order> Add(Order order)
         {
             return _context.Orders.Add(order).Entity;
         }
@@ -38,7 +35,7 @@ namespace Infrastructure.Repositories
             _context.Orders.Update(booking);
         }
 
-        public OrderItem GetOrderItemById(Guid id)
+        public async Task<OrderItem> GetOrderItemById(Guid id)
         {
             return _context.OrderItems.FirstOrDefault(o => o.Id == id);
         }
@@ -56,6 +53,11 @@ namespace Infrastructure.Repositories
         public async Task<Order> GetOrder(Guid orderId)
         {
             return await _context.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
+        }
+
+        public async Task<Order> GetOrderByOrderIdAndCustomerId(Guid orderId, Guid customerId)
+        {
+            return await _context.Orders.Where(o => o.Id == orderId && o.PassengerId == customerId).FirstOrDefaultAsync();
         }
     }
 }

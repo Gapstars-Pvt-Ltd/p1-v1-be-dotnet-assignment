@@ -19,6 +19,8 @@ public class Order : Entity, IAggregateRoot
     public IReadOnlyCollection<OrderItem> OrderItems => _orderItems.AsReadOnly();
     public decimal Total { get; private set; }
 
+    public string Status { get; set; }
+
     public Order() { }
 
     public Order(Guid passengerId, List<OrderItem> orderItems) : this()
@@ -27,6 +29,7 @@ public class Order : Entity, IAggregateRoot
         OrderDate = DateTimeOffset.Now;
         _orderItems = orderItems;
         Total = OrderItems.Sum(o => o.TotalPrice);
+        Status = OrderStatus.New.ToString();
     }
     
     public void AddOrderItem(OrderItem orderItem)

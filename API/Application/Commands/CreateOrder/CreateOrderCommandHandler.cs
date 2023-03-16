@@ -30,10 +30,12 @@ namespace API.Application.Commands
             {
                 var passenger = new Passenger(request.OrderDto.PassengerInfo.firstName, request.OrderDto.PassengerInfo.lastName, request.OrderDto.PassengerInfo.Age, request.OrderDto.PassengerInfo.email);
                 _passengerRepository.Add(passenger);
-                _passengerRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+                await  _passengerRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
                 
                 // Create order
                 await CreateBooking(passenger.Id, request, cancellationToken);
+
+                return Unit.Value;
             }
             
             // Customer found, create order for the existing customer
@@ -49,7 +51,7 @@ namespace API.Application.Commands
 
             customer.PlaceOrder(orderItems);
             
-            _passengerRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+           await _passengerRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }
