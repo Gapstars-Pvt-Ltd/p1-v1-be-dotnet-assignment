@@ -15,6 +15,7 @@ using Domain.Aggregates.FlightAggregate;
 using Domain.Aggregates.OrderAggregate;
 using API.Application.Query;
 using Domain.Aggregates.PassengerAggregate;
+using API.Application.Commands.UpdateOrder;
 
 namespace API
 {
@@ -46,6 +47,7 @@ namespace API
 
             services.AddScoped<FlightSearchQuery>();
             services.AddScoped<CreateOrderCommand>();
+            services.AddScoped<UpdateOrderStatusCommand>();
             
             services.AddScoped<IAirportRepository, AirportRepository>();
             services.AddScoped<IFlightRepository, FlightRepository>();

@@ -33,7 +33,7 @@ public class FlightSearchQueryHandler : IRequestHandler<FlightSearchQuery, List<
         
         foreach (var flight in flights)
         {
-            var deptAirport = await GetAirport(flight.DestinationAirportId);
+            var deptAirport = await GetAirport(flight.OriginAirportId);
             
             var searchResult = new FlightViewModel
             {

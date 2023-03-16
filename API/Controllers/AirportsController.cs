@@ -8,28 +8,23 @@ using Microsoft.Extensions.Logging;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class AirportsController : ControllerBase
+    public class AirportsController : BaseController
     {
         private readonly ILogger<AirportsController> _logger;
-        private readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
         public AirportsController(
             ILogger<AirportsController> logger,
-            IMediator mediator,
             IMapper mapper)
         {
             _logger = logger;
-            _mediator = mediator;
             _mapper = mapper;
         }
         
         [HttpPost]
         public async Task<IActionResult> Store([FromBody]CreateAirportCommand command)
         {
-            var airport = await _mediator.Send(command);
+            var airport = await Mediator.Send(command);
 
             return Ok(_mapper.Map<AirportViewModel>(airport));
         }

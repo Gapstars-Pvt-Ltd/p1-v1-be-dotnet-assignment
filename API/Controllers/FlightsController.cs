@@ -11,26 +11,23 @@ using API.Application.ViewModels;
 
 namespace API.Controllers;
 
-[ApiController]
-public class FlightsController : ControllerBase
+public class FlightsController : BaseController
 {
     private readonly ILogger<FlightsController> _logger;
-    private readonly IMediator _mediator;
     private readonly FlightSearchQuery _flightSearchQuery;
 
-    public FlightsController(ILogger<FlightsController> logger, FlightSearchQuery flightSearchQuery, IMediator mediator)
+    public FlightsController(ILogger<FlightsController> logger, FlightSearchQuery flightSearchQuery)
     {
         _logger = logger;
-        _mediator = mediator;
         _flightSearchQuery = flightSearchQuery;
     }
 
     [HttpGet]
-    [Route("Flight/Search")]
+    [Route("/Search")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetAvailableFlights([FromQuery]Guid arrivingAirport)
     {
         _flightSearchQuery.DestinationAirPortId = Guid.Parse(Request.Query["arrivingAirport"].ToString());
-        return Ok(await _mediator.Send(_flightSearchQuery));
+        return Ok(await Mediator.Send(_flightSearchQuery));
     }
 }
