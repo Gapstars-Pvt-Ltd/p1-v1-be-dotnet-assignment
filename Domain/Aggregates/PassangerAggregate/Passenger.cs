@@ -33,6 +33,8 @@ namespace Domain.Aggregates.PassengerAggregate
             order.Place(order);
             
             AddDomainEvent(new OrderPlacedEvent(order));
+            
+            Console.WriteLine($"Order placed for passenger {FirstName} {LastName}.");
         }
     }
 }

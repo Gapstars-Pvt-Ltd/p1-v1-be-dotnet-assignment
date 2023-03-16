@@ -1,4 +1,5 @@
 using System;
+using Domain.Events;
 using Domain.SeedWork;
 
 namespace Domain.Aggregates.OrderAggregate;
@@ -20,6 +21,9 @@ public class OrderItem : Entity
     public void UpdateQuantity(int quantity)
     {
         Quantity = quantity;
+        
+        // We need to reduce the number of seats available in the flight
+        AddDomainEvent(new FlightSeatingAvailabilityChangeEvent(FlightId, quantity));
     }
 
     public void UpdatePrice(decimal price)
