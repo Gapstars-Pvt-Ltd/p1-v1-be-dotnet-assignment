@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Domain.Aggregates.OrderAggregate
 {
-    public interface IOrderRepository
+    public interface IOrderRepository : IRepository<Order>
     {
         Order GetById(Guid id);
         Order Add(Order order);
         void Update(Order order);
         
-        OrderItems GetOrderItemById(Guid id);
-        void AddOrderItem(OrderItems orderItem);
-        void UpdateOrderItem(OrderItems orderItem);
+        OrderItem GetOrderItemById(Guid id);
+        void AddOrderItem(OrderItem orderItem);
+        void UpdateOrderItem(OrderItem orderItem);
     }
 }

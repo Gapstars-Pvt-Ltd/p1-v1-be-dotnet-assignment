@@ -1,15 +1,13 @@
-﻿using Domain.Aggregates.FlightAggregate;
+﻿using API.Application.Dto;
+using Domain.Aggregates.FlightAggregate;
 using Domain.Aggregates.OrderAggregate;
-using Domain.Aggregates.PassangerAggregate;
+using Domain.Aggregates.PassengerAggregate;
 using MediatR;
 
 namespace API.Application.Commands
 {
     public class CreateOrderCommand : IRequest
     {
-        public string Class { get; set; }
-        public int NoOfPassengers {  get; set; }
-        public Flight Flight { get; set; }
-        public Passenger Customer { get; set; }
+        public OrderDto OrderDto { get; set; }
     }
 }

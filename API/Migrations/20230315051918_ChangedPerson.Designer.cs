@@ -3,15 +3,17 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace API.Migrations
 {
     [DbContext(typeof(FlightsContext))]
-    partial class FlightsContextModelSnapshot : ModelSnapshot
+    [Migration("20230315051918_ChangedPerson")]
+    partial class ChangedPerson
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,23 +99,29 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTimeOffset>("OrderDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("PassengerId")
+                    b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PassengerId");
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Domain.Aggregates.OrderAggregate.OrderItem", b =>
+            modelBuilder.Entity("Domain.Aggregates.OrderAggregate.OrderItems", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -122,13 +130,16 @@ namespace API.Migrations
                     b.Property<Guid>("FlightId")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("NoOfSeats")
+                        .HasColumnType("integer");
+
                     b.Property<Guid?>("OrderId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("OrderItemId")
+                        .HasColumnType("uuid");
 
-                    b.Property<decimal>("UnitPrice")
+                    b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
@@ -151,13 +162,12 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("PassengerId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -210,18 +220,17 @@ namespace API.Migrations
             modelBuilder.Entity("Domain.Aggregates.OrderAggregate.Order", b =>
                 {
                     b.HasOne("Domain.Aggregates.PassengerAggregate.Passenger", null)
-                        .WithMany("Orders")
-                        .HasForeignKey("PassengerId")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Aggregates.OrderAggregate.OrderItem", b =>
+            modelBuilder.Entity("Domain.Aggregates.OrderAggregate.OrderItems", b =>
                 {
                     b.HasOne("Domain.Aggregates.OrderAggregate.Order", null)
                         .WithMany("OrderItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("OrderId");
                 });
 #pragma warning restore 612, 618
         }

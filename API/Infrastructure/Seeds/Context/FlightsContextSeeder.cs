@@ -1,12 +1,12 @@
 using System;
 using Infrastructure;
 
-namespace API.Infrastructure.Seeds
+namespace API.Infrastructure.Seeds.Context
 {
     public abstract class FlightsContextSeeder : ISeeder
     {
         public FlightsContextSeeder(FlightsContext flightsContext)
-        {
+        {   
             FlightsContext = flightsContext;
         }
 

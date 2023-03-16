@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using API.Application.Commands;
 using Domain.Aggregates.AirportAggregate;
 using FluentValidation.AspNetCore;
 using Infrastructure;
@@ -13,6 +14,7 @@ using MediatR;
 using Domain.Aggregates.FlightAggregate;
 using Domain.Aggregates.OrderAggregate;
 using API.Application.Query;
+using Domain.Aggregates.PassengerAggregate;
 
 namespace API
 {
@@ -43,9 +45,12 @@ namespace API
                 typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
 
             services.AddScoped<FlightSearchQuery>();
+            services.AddScoped<CreateOrderCommand>();
+            
             services.AddScoped<IAirportRepository, AirportRepository>();
             services.AddScoped<IFlightRepository, FlightRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IPassengerRepository, PassengerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

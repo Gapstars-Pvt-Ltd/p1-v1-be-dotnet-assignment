@@ -1,13 +1,14 @@
 using System;
+using Domain.Aggregates.OrderAggregate;
 using MediatR;
 
 namespace Domain.Events;
 
 public class OrderPlacedEvent : INotification
 {
-    public Guid OrderId { get; private set; }
-    public OrderPlacedEvent(Guid orderId)
+    public Order Order { get; }
+    public OrderPlacedEvent(Order order)
     {
-        OrderId = orderId;
+        Order = order;
     }
 }

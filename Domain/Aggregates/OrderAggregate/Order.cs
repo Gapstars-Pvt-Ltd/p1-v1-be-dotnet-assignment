@@ -1,66 +1,56 @@
-﻿using Domain.Aggregates.FlightAggregate;
-using Domain.Exceptions;
-using Domain.SeedWork;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.Aggregates.FlightAggregate;
+using Domain.Aggregates.PassengerAggregate;
 using Domain.Common;
 using Domain.Events;
+using Domain.SeedWork;
 
-namespace Domain.Aggregates.OrderAggregate
+namespace Domain.Aggregates.OrderAggregate;
+
+public class Order : Entity, IAggregateRoot
 {
-    public class Order : Entity, IAggregateRoot
+    public DateTimeOffset OrderDate { get; private set; }
+    public Guid PassengerId { get; private set; }
+    
+    private List<OrderItem> _orderItems = new List<OrderItem>();
+    public IReadOnlyCollection<OrderItem> OrderItems => _orderItems.AsReadOnly();
+    public decimal Total { get; private set; }
+
+    public Order() { }
+
+    public Order(Guid passengerId, List<OrderItem> orderItems) : this()
     {
-        public Guid OrderId { get; set; }
-        public Guid CustomerId { get; set; }
-        public DateTimeOffset OrderDate { get; set; }
-        public decimal Total { get; set; }
-        public OrderStatus Status { get; set; }
-        
-        private readonly List<OrderItems> _orderItems;
-        public IReadOnlyCollection<OrderItems> OrderItems => _orderItems.AsReadOnly();
+        PassengerId = passengerId;
+        OrderDate = DateTimeOffset.Now;
+        _orderItems = orderItems;
+        Total = OrderItems.Sum(o => o.TotalPrice);
+    }
+    
+    public void AddOrderItem(OrderItem orderItem)
+    {
+        _orderItems.Add(orderItem);
+    }
 
-        public Order() { }
-        public Order(Guid customerId, decimal total)
-        {
-            OrderId = Guid.NewGuid();
-            CustomerId = customerId;
-            OrderDate = DateTimeOffset.Now;
-            Total = total;
-            Status = OrderStatus.New;
-        }
+    public void RemoveOrderItem(OrderItem orderItem)
+    {
+        _orderItems.Remove(orderItem);
+    }
 
-        public void AddOrderItem(Guid flightId, int noOfSeats, decimal price)
-        {
-            var orderItem = new OrderItems(flightId, noOfSeats, price);
-            _orderItems.Add(orderItem); 
-            
-            AddDomainEvent(new OrderItemAddedEvent(flightId, noOfSeats, price));
-        }
+    public void UpdateOrderItemQuantity(OrderItem orderItem, int quantity)
+    {
+        orderItem.UpdateQuantity(quantity);
+    }
 
-        public void UpdateOrderItemQuantity(Guid flightId, int noOfSeats)
-        {
-            var orderItem = _orderItems.SingleOrDefault(x => x.FlightId == flightId);
-            
-            if (orderItem != null)
-            {
-                orderItem.UpdateSeatCount(noOfSeats);
-                
-                AddDomainEvent(new OrderItemQuantityUpdatedEvent(flightId, noOfSeats));
-            }
-        }
+    public void UpdateOrderItemPrice(OrderItem orderItem, decimal price)
+    {
+        orderItem.UpdatePrice(price);
+    }
 
-        public void PlaceOrder()
-        {
-            if (Status == OrderStatus.New)
-            {
-                Status = OrderStatus.Placed;
-                
-                AddDomainEvent(new OrderPlacedEvent(OrderId));
-            }
-        }
+    public void Place(Order order)
+    {
+        AddDomainEvent(new OrderPlacedEvent(order));
     }
 }

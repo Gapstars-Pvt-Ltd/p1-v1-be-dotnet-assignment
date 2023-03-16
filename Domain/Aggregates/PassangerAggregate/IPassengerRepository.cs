@@ -1,10 +1,13 @@
 using System;
+using Domain.Events;
+using Domain.SeedWork;
 
-namespace Domain.Aggregates.PassangerAggregate;
+namespace Domain.Aggregates.PassengerAggregate;
 
-public interface IPassengerRepository
+public interface IPassengerRepository : IRepository<Passenger>
 {
     Passenger GetById(Guid id);
-    void Add(Passenger passenger);
+    Passenger GetByEmail(string email);
+    Passenger Add(Passenger passenger);
     void Update(Passenger passenger);
 }

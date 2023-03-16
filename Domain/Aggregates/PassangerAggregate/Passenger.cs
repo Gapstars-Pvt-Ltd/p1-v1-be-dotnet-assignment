@@ -1,49 +1,38 @@
-﻿using Domain.SeedWork;
+﻿using System;
+using System.Collections.Generic;
+using Domain.Aggregates.OrderAggregate;
+using Domain.Events;
+using Domain.SeedWork;
 
-namespace Domain.Aggregates.PassangerAggregate
+namespace Domain.Aggregates.PassengerAggregate
 {
-    public class Passenger : Entity
+    public class Passenger : Entity, IAggregateRoot
     {
-        public string Name { get; private set; }
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
         public int Age { get; private set; }
         public string Email { get; private set; }
         
-        public string Street { get; private set; }
-
-        public string City { get; private set; }
-
-        public string State { get; private set; }
-
-        public string Country { get; private set; }
-
-        public string ZipCode { get; private set; }
+        private List<Order> _orders = new List<Order>();
+        public IReadOnlyCollection<Order> Orders => _orders.AsReadOnly();
 
         public Passenger() { }
-
-        public Passenger(string name, int age, string email, string street, string city, string state, string country, string zipCode)
+        
+        public Passenger(string firstName, string lastName, int age, string email) : this()
         {
-            Name = name;
+            FirstName = firstName;
+            LastName = lastName;
             Age = age;
             Email = email;
-            Street = street;
-            City = city;
-            State = state;
-            Country = country;
-            ZipCode = zipCode;
         }
         
-        public void UpdatePassenger(string name, int age, string email, string street, string city, string state, string country, string zipCode)
+        public void PlaceOrder(List<OrderItem> orderItems)
         {
-            Name = name;
-            Age = age;
-            Email = email;
-            Street = street;
-            City = city;
-            State = state;
-            Country = country;
-            ZipCode = zipCode;
+            var order = new Order(Id, orderItems);
+            _orders.Add(order);
+            order.Place(order);
             
-            // Implement Domain events here
+            AddDomainEvent(new OrderPlacedEvent(order));
         }
     }
 }

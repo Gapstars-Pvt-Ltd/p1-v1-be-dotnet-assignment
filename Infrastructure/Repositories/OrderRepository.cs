@@ -25,7 +25,7 @@ namespace Infrastructure.Repositories
 
         public Order GetById(Guid id)
         {
-            throw new NotImplementedException();
+            return _context.Orders.FirstOrDefault(o => o.Id == id);
         }
 
         public Order Add(Order order)
@@ -38,19 +38,19 @@ namespace Infrastructure.Repositories
             _context.Orders.Update(booking);
         }
 
-        public OrderItems GetOrderItemById(Guid id)
+        public OrderItem GetOrderItemById(Guid id)
         {
-            throw new NotImplementedException();
+            return _context.OrderItems.FirstOrDefault(o => o.Id == id);
         }
 
-        public void AddOrderItem(OrderItems orderItem)
+        public void AddOrderItem(OrderItem orderItem)
         {
-            throw new NotImplementedException();
+            _context.OrderItems.Add(orderItem);
         }
 
-        public void UpdateOrderItem(OrderItems orderItem)
+        public void UpdateOrderItem(OrderItem orderItem)
         {
-            throw new NotImplementedException();
+            _context.OrderItems.Update(orderItem);
         }
 
         public async Task<Order> GetOrder(Guid orderId)
