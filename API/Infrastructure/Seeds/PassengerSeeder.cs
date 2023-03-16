@@ -22,5 +22,17 @@ public class PassengerSeeder : PassengerContextSeeder
         };
         
         // Seed the database with 100 passengers
+
+        List<Passenger> passengers = new List<Passenger>
+        {
+            new Passenger("John", "Doe", 25, "johndoe@gmail.com"),
+            new Passenger("Jane", "Doe", 35, "janedoe@gmail.com"),
+            new Passenger("Jonny", "Doe", 18, "jonny@gmail.com"),
+            new Passenger("Alan", "Sams", 23, "alansams@gmail.com")
+        };
+
+        PassengerContext.AddRange(passengers);
+
+        PassengerContext.SaveChanges();
     }
 }

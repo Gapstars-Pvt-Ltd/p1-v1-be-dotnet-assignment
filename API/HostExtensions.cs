@@ -28,6 +28,8 @@ namespace API
                     new AirportsSeeder(context).Seed();
                     new FlightsSeeder(context).Seed();
                     new FlightRatesSeeder(context).Seed();
+                    new PassengerSeeder(context).Seed();
+
                     Console.WriteLine("Database seeded");
                 }
             }
