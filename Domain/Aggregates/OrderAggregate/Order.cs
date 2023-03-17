@@ -15,8 +15,24 @@ namespace Domain.Aggregates.OrderAggregate
 
         public int SeatCount { get; private set; }
 
+        public OrderState State { get; private set; }
+
         public Order()
         {
         }
+
+        public Order(Guid flightId, string name, Guid customerId, int seatCount) : this()
+        {
+            FlightId = flightId;
+            Name = name;
+            CustomerId = customerId;
+            SeatCount = seatCount;
+        }
+    }
+
+    public enum OrderState 
+    {
+        Draft,
+        Confirmed
     }
 }

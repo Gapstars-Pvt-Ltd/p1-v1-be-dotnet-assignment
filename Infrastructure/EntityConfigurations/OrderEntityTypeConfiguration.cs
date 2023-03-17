@@ -2,6 +2,8 @@
 using Domain.Aggregates.OrderAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Reflection.Emit;
 
 namespace Infrastructure.EntityConfigurations
 {
@@ -15,6 +17,12 @@ namespace Infrastructure.EntityConfigurations
             builder.Property("Name").IsRequired();
             builder.Property("CustomerId").IsRequired();
             builder.Property("SeatCount").IsRequired();
+
+            var converter = new EnumToStringConverter<OrderState>();
+
+            builder
+                .Property(e => e.State)
+                .HasConversion(converter);
         }
     }
 }

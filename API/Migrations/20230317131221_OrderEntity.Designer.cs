@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(FlightsContext))]
-    [Migration("20230317120653_OrderEntity")]
+    [Migration("20230317131221_OrderEntity")]
     partial class OrderEntity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,6 +110,10 @@ namespace API.Migrations
 
                     b.Property<int>("SeatCount")
                         .HasColumnType("integer");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

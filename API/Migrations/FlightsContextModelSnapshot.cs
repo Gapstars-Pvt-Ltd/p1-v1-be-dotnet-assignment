@@ -109,6 +109,10 @@ namespace API.Migrations
                     b.Property<int>("SeatCount")
                         .HasColumnType("integer");
 
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("Orders");

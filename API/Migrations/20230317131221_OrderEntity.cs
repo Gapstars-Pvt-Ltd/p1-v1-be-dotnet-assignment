@@ -33,7 +33,8 @@ namespace API.Migrations
                     FlightId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    SeatCount = table.Column<int>(type: "integer", nullable: false)
+                    SeatCount = table.Column<int>(type: "integer", nullable: false),
+                    State = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
