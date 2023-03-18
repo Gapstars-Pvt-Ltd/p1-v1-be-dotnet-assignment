@@ -29,13 +29,13 @@ namespace API.Application.Commands
 
 
 
-            flight.MutateRateAvailability(orderToConfirm.FlightRateId, orderToConfirm.SeatCount);
+            flight.MutateRateAvailability(orderToConfirm.FlightRateId, - orderToConfirm.SeatCount);
 
             _flightRepository.Update(flight); 
 
             await _orderRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
-            return orderToConfirm;
+            return orderToConfirm; 
         }
     }
 }
