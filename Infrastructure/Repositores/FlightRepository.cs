@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Repositores
@@ -37,10 +38,13 @@ namespace Infrastructure.Repositores
             return await _context.Flights.Include("Rates").FirstOrDefaultAsync(o => o.Id == flightId);
         }
 
-        public async Task<List<Flight>> GetAvailableFlights(Guid destinationAirportId)
+        public async Task<List<Flight>> GetAvailableFlightsAsync(Guid destinationAirportId, CancellationToken cancellationToken)
         {
-            //return await _context.Flights.Where(o => o.DestinationAirportId == destinationAirportId).ToListAsync();
-            return await _context.Flights.ToListAsync(); 
+            return await _context.Flights.Include("Rates")
+                .Include("OriginAirport")
+                .Include("DestinationAirport")
+                .Where(o => o.DestinationAirportId == destinationAirportId && o.Rates.Any())
+                .ToListAsync();
         }
     }
 }

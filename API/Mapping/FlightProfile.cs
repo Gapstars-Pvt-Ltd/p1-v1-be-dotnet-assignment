@@ -1,5 +1,7 @@
 ﻿using API.ApiResponses;
+using API.Application.ViewModels;
 using AutoMapper;
+using Domain.Aggregates.AirportAggregate;
 using Domain.Aggregates.FlightAggregate;
 using System.Linq;
 
@@ -11,11 +13,11 @@ namespace API.Mapping
         {
             CreateMap<Flight, FlightResponse>()
                 .ConstructUsing(x => new FlightResponse(
-                    x.DestinationAirportId.ToString(),
-                    x.OriginAirportId.ToString(),
+                    x.OriginAirport.Code,
+                    x.DestinationAirport.Code,
                     x.Departure,
                     x.Arrival,
-                    x.Rates.Select(p => p.Price.Value).Min()
+                    x.Rates.Select(p => p.Price.Value).DefaultIfEmpty().Min()
                 ));
         }
     }
