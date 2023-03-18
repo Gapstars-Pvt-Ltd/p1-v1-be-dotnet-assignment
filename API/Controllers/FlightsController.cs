@@ -43,7 +43,7 @@ public class FlightsController : ControllerBase
     {
         var flight = await _mediator.Send(new GetFlightQuery { Id = id });
 
-        return Ok(flight);
+        return flight != null ? Ok(flight) : NotFound("Flight Not Found With Given Id");
     }
 
     [HttpGet]
