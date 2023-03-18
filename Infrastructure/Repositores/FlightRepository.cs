@@ -32,7 +32,7 @@ namespace Infrastructure.Repositores
 
         public async Task<Flight> GetAsync(Guid flightId)
         {
-            return await _context.Flights.FirstOrDefaultAsync(o => o.Id == flightId); 
+            return await _context.Flights.Include(x=>x.Rates).FirstOrDefaultAsync(o => o.Id == flightId); 
         }
 
         public void Update(Flight _flight)

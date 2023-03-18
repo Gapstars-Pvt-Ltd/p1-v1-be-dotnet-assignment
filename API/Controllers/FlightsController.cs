@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using API.ApiResponses;
 using API.Application.Commands.Flights.GetAllFlights;
 using API.Application.Commands.Flights.GetAvailableFlights;
+using API.Application.Commands.Flights.GetFlight;
 using API.Application.ViewModels.Flights;
 using AutoMapper;
 using MediatR;
@@ -36,6 +37,14 @@ public class FlightsController : ControllerBase
         return Ok(flights);
     }
 
+    
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> Get(Guid id)
+    {
+        var flight = await _mediator.Send(new GetFlightQuery { Id = id });
+
+        return Ok(flight);
+    }
 
     [HttpGet]
     [Route("Search")]
