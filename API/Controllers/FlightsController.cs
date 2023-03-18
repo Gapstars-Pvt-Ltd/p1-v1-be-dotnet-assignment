@@ -30,12 +30,9 @@ public class FlightsController : ControllerBase
 
     [HttpGet]
     [Route("Search")]
-    public async Task<ActionResult<IEnumerable<FlightResponse>>> GetAvailableFlights() //Guid destinationAirportId
+    public async Task<ActionResult<IEnumerable<FlightResponse>>> GetAvailableFlights(Guid destinationAirportId)
     {
-
-        Guid id = Guid.NewGuid();
-
-        GetAvailableFlightsQuery query = new GetAvailableFlightsQuery(id);
+        GetAvailableFlightsQuery query = new GetAvailableFlightsQuery(destinationAirportId);
         var flightsToDestination = await _mediator.Send(query);
         return Ok(flightsToDestination);
     }

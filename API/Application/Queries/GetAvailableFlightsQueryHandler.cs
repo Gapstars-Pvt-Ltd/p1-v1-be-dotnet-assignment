@@ -26,12 +26,9 @@ namespace API.Application.Queries
 
         public async Task<List<FlightResponse>> Handle(GetAvailableFlightsQuery request, CancellationToken cancellationToken)
         {
-            List<Flight> flights = await _flightRepository.GetAvailableFlights(request.DestinationAirportId);
-            //_mapper.Map<List<Flight>, List<FlightResponse>>(flights);
+            List<Flight> flights = await _flightRepository.GetAvailableFlightsAsync(request.DestinationAirportId, cancellationToken);
 
-            List<FlightResponse> u =  flights.Select(_mapper.Map<Flight, FlightResponse>).ToList();
-
-            return u;
+            return _mapper.Map<List<FlightResponse>>(flights);
         }
     }
 }

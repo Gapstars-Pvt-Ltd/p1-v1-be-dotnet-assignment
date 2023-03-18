@@ -1,5 +1,8 @@
+using Domain.Aggregates.FlightAggregate;
 using Domain.Exceptions;
 using Domain.SeedWork;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Aggregates.AirportAggregate
 {
