@@ -1,5 +1,6 @@
 using Domain.Aggregates.AirportAggregate;
 using Domain.Aggregates.FlightAggregate;
+using Infrastructure.EntityConfigurations.BaseEntity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -16,12 +17,10 @@ namespace Infrastructure.EntityConfigurations
 
             builder.Property("Arrival").IsRequired();
             builder.Property("Departure").IsRequired();
-            
             builder.HasOne<Airport>()
                 .WithMany()
                 .IsRequired()
                 .HasForeignKey("OriginAirportId");
-            
             builder.HasOne<Airport>()
                 .WithMany()
                 .IsRequired()

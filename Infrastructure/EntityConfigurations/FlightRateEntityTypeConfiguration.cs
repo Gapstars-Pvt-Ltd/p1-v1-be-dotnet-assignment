@@ -1,5 +1,6 @@
 using System;
 using Domain.Aggregates.FlightAggregate;
+using Infrastructure.EntityConfigurations.BaseEntity;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.EntityConfigurations
@@ -11,17 +12,13 @@ namespace Infrastructure.EntityConfigurations
             base.Configure(builder);
 
             builder.Property<Guid>("FlightId").IsRequired();
-            
             builder.Property("Name").IsRequired();
             builder.Property("Available").IsRequired();
-
             builder.OwnsOne(o => o.Price, a =>
             {
                 a.Property<Guid>("FlightRateId");
                 a.WithOwner();
             });
-
-            
         }
     }
 }
