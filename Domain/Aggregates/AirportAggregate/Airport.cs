@@ -24,4 +24,4 @@ namespace Domain.Aggregates.AirportAggregate
             Name = name;
         }
     }
-}
+}   

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Domain.Aggregates.FlightAggregate
@@ -10,5 +11,11 @@ namespace Domain.Aggregates.FlightAggregate
         void Update(Flight flight);
 
         Task<Flight> GetAsync(Guid flightId);
+
+        Task<List<Flight>> GetAll();
+
+        Task<List<AvailableFlightsDomainViewModel>> Search(string AirportCode);
+
+
     }
 }
