@@ -24,6 +24,11 @@ namespace Domain.Aggregates.OrderAggregate
 
         public Order(Guid flightId, Guid flightRateId, Guid customerId, int seatCount) : this()
         {
+            if (seatCount <= 0)
+            {
+                throw new OrderDomainException("The order should contain at least one passenger booking.");
+            }
+
             FlightId = flightId;
             FlightRateId = flightRateId;
             CustomerId = customerId;
