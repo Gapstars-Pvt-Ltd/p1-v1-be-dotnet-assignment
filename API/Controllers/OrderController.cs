@@ -27,12 +27,21 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Route("Create")]
         public async Task<IActionResult> PlaceOrder([FromBody] CreateOrderCommand command)
         {
             var order = await _mediator.Send(command);
 
             return Ok(_mapper.Map<OrderViewModel>(order));
         }
-    }
 
+        [HttpPost]
+        [Route("Confirm")]
+        public async Task<IActionResult> Confirm([FromBody] ConfirmOrderCommand command)
+        {
+            var order = await _mediator.Send(command);
+
+            return Ok(_mapper.Map<OrderViewModel>(order));
+        }
+    }
 }

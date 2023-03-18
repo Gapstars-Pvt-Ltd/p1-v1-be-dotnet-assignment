@@ -1,4 +1,5 @@
-﻿using Domain.Exceptions;
+﻿using Domain.Aggregates.FlightAggregate;
+using Domain.Exceptions;
 using Domain.SeedWork;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +10,7 @@ namespace Domain.Aggregates.OrderAggregate
     {
         public Guid FlightId { get; private set; }
 
-        public string Name { get; private set; }
+        public Guid FlightRateId { get; private set; }
 
         public Guid CustomerId { get; private set; }
 
@@ -21,12 +22,17 @@ namespace Domain.Aggregates.OrderAggregate
         {
         }
 
-        public Order(Guid flightId, string name, Guid customerId, int seatCount) : this()
+        public Order(Guid flightId, Guid flightRateId, Guid customerId, int seatCount) : this()
         {
             FlightId = flightId;
-            Name = name;
+            FlightRateId = flightRateId;
             CustomerId = customerId;
             SeatCount = seatCount;
+        }
+
+        public void ConfirmOrder() 
+        {
+            State = OrderState.Confirmed; 
         }
     }
 

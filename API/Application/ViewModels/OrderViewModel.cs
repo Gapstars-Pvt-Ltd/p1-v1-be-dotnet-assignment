@@ -8,7 +8,7 @@ namespace API.Application.ViewModels
 
         public Guid FlightId { get; set; }
 
-        public string Name { get; set; }
+        public Guid FlightRateId { get; set; }
 
         public Guid CustomerId { get; set; }
 

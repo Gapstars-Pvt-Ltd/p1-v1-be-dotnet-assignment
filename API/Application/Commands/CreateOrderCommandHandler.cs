@@ -18,7 +18,7 @@ namespace API.Application.Commands
         public async Task<Order> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
             var order = _orderRepository.Add(
-                new Order(request.FlightId, request.Name, request.CustomerId, request.SeatCount));
+                new Order(request.FlightId, request.FlightRateId, request.CustomerId, request.SeatCount));
 
             await _orderRepository.UnitOfWork.SaveEntitiesAsync();
 

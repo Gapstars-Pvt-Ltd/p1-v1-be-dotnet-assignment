@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using Domain.Aggregates.FlightAggregate;
 using AutoMapper;
 using System;
+using YamlDotNet.Core;
+using System.Linq;
 
 namespace API.Application.Queries
 {
@@ -25,7 +27,11 @@ namespace API.Application.Queries
         public async Task<List<FlightResponse>> Handle(GetAvailableFlightsQuery request, CancellationToken cancellationToken)
         {
             List<Flight> flights = await _flightRepository.GetAvailableFlights(request.DestinationAirportId);
-            return _mapper.Map<List<FlightResponse>>(flights);
+            //_mapper.Map<List<Flight>, List<FlightResponse>>(flights);
+
+            List<FlightResponse> u =  flights.Select(_mapper.Map<Flight, FlightResponse>).ToList();
+
+            return u;
         }
     }
 }

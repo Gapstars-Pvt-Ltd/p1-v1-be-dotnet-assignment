@@ -31,7 +31,7 @@ namespace API.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     FlightId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
+                    FlightRateId = table.Column<Guid>(type: "uuid", nullable: false),
                     CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
                     SeatCount = table.Column<int>(type: "integer", nullable: false),
                     State = table.Column<string>(type: "text", nullable: false)

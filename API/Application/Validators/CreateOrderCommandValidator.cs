@@ -7,8 +7,7 @@ namespace API.Application.Validators
     {
         public CreateOrderCommandValidator()
         {
-            RuleFor(c => c.FlightId).NotEmpty();
-            RuleFor(c => c.Name).NotEmpty();
+            RuleFor(c => c.FlightRateId).NotEmpty();
             RuleFor(c => c.CustomerId).NotEmpty();
             RuleFor(c => c.SeatCount).GreaterThan(0);
         }

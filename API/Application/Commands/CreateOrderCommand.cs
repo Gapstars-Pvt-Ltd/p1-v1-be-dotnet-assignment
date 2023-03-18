@@ -1,4 +1,5 @@
-﻿using Domain.Aggregates.OrderAggregate;
+﻿using Domain.Aggregates.FlightAggregate;
+using Domain.Aggregates.OrderAggregate;
 using MediatR;
 using System;
 
@@ -8,16 +9,16 @@ namespace API.Application.Commands
     {
         public Guid FlightId { get; private set; }
 
-        public string Name { get; private set; }
+        public Guid FlightRateId { get; private set; }
 
         public Guid CustomerId { get; private set; }
 
         public int SeatCount { get; private set; }
 
-        public CreateOrderCommand(Guid flightId, string name, Guid customerId, int seatCount)
+        public CreateOrderCommand(Guid flightId, Guid flightRateId, Guid customerId, int seatCount)
         {
             FlightId = flightId;
-            Name = name;
+            FlightRateId = flightRateId;
             CustomerId = customerId;
             SeatCount = seatCount;
         }

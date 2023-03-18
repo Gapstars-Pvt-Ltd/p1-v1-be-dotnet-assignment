@@ -102,9 +102,8 @@ namespace API.Migrations
                     b.Property<Guid>("FlightId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("FlightRateId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("SeatCount")
                         .HasColumnType("integer");

@@ -14,7 +14,7 @@ namespace Infrastructure.EntityConfigurations
             base.Configure(builder);
 
             builder.Property("FlightId").IsRequired();
-            builder.Property("Name").IsRequired();
+            builder.Property("FlightRateId").IsRequired();
             builder.Property("CustomerId").IsRequired();
             builder.Property("SeatCount").IsRequired();
 

@@ -34,7 +34,7 @@ namespace Infrastructure.Repositores
 
         public async Task<Flight> GetAsync(Guid flightId)
         {
-            return await _context.Flights.FirstOrDefaultAsync(o => o.Id == flightId);
+            return await _context.Flights.Include("Rates").FirstOrDefaultAsync(o => o.Id == flightId);
         }
 
         public async Task<List<Flight>> GetAvailableFlights(Guid destinationAirportId)
