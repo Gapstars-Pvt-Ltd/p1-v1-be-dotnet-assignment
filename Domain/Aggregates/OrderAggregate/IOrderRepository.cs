@@ -16,6 +16,8 @@ namespace Domain.Aggregates.OrderAggregate
 
         void Update(Order order);
 
+        Task<Order> ConfirmAsync(Guid orderId);
+
         Task<Order> GetAsync(Guid orderId);
     }
 }

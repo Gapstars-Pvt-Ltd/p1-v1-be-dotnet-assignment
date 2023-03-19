@@ -1,5 +1,8 @@
 ﻿using Domain.Aggregates.FlightAggregate;
 using Domain.Common;
+using Domain.Events;
+using Domain.Events.Orders;
+using Domain.Exceptions;
 using Domain.SeedWork;
 using System;
 using System.Collections.Generic;
@@ -42,6 +45,20 @@ namespace Domain.Aggregates.OrderAggregate
         {
             var item = new OrderItem(flightRateId, price, qty);
             _items.Add(item);
+        }
+
+        public void ConfimOrder()
+        {
+            //todo : implment order status enum
+           if(this.Status== "Confirm")
+            {
+                throw new OrderDomainException("You Cannot Change status of  Confrim order !");
+            }
+            else
+            {
+                this.Status = "Confirm";
+                AddDomainEvent(new OrderConfirmEvent(this));
+            }
         }
 
 

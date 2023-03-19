@@ -26,6 +26,12 @@ namespace Infrastructure.Repositores
             get { return _context; }
         }
 
+        /// <summary>
+        /// add order 
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        /// <exception cref="FlightDomainException"></exception>
         public Order Add(Order order)
         {
            foreach(var item in order.Items)
@@ -48,6 +54,43 @@ namespace Infrastructure.Repositores
             return  _context.Orders.Add(order).Entity;
         }
 
+        /// <summary>
+        /// confrim order and raize qty change domain event 
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<Order> ConfirmAsync(Guid orderId)
+        {
+            var CurrentOrder = await _context.Orders.Include(x=>x.Items).Where(x=>x.Id == orderId).SingleOrDefaultAsync();
+
+            var Flight = await _context.Flights.Include(x=>x.Rates).Where(x=>x.Id == CurrentOrder.FlightId).SingleOrDefaultAsync();
+            if (CurrentOrder == null)
+            {
+                throw new Exception("Not Found Exception");
+            }
+            if (CurrentOrder != null) 
+            {
+                foreach(var item in CurrentOrder.Items)
+                {
+                    // triger domain event of changes the avaible qty 
+                    if (CurrentOrder.Status == "Pending")
+                    {
+                        Flight.MutateRateAvailability(item.FlightRateId, -1 * item.Qty);
+                    }
+                  
+                }
+
+               // CurrentOrder.Status = "Confirm";
+                CurrentOrder.ConfimOrder();
+                
+                _context.Orders.Update(CurrentOrder);
+
+                await _context.SaveChangesAsync();
+            }
+            return CurrentOrder;
+        }
+
         public async Task<Order> GetAsync(Guid orderId)
         {
            return await _context.Orders.Include(x=>x.Items).Where(x=>x.Id == orderId).SingleOrDefaultAsync();
@@ -57,5 +100,7 @@ namespace Infrastructure.Repositores
         {
             throw new NotImplementedException();
         }
+
+       
     }
 }

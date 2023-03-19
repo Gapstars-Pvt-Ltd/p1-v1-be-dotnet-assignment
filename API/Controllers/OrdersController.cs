@@ -1,5 +1,6 @@
 ﻿using API.Application.Commands.Airports;
 using API.Application.Commands.Flights.GetFlight;
+using API.Application.Commands.Orders.ConfirmOrder;
 using API.Application.Commands.Orders.CreateOrder;
 using API.Application.Commands.Orders.GetOrder;
 using API.Application.ViewModels;
@@ -15,13 +16,13 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class OrderController : ControllerBase
+    public class OrdersController : ControllerBase
     {
         private readonly ILogger<AirportsController> _logger;
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
-        public OrderController(ILogger<AirportsController> logger, IMediator mediator, IMapper mapper)
+        public OrdersController(ILogger<AirportsController> logger, IMediator mediator, IMapper mapper)
         {
             _logger = logger;
             _mediator = mediator;
@@ -41,7 +42,16 @@ namespace API.Controllers
         {
             var order = await _mediator.Send(new GetOrderQuery { Id = id });
            
-            return order != null ? Ok(order) : NotFound("Order Not Found With Given Id");
+            return order != null ? Ok(_mapper.Map<OrderViewModel>(order)) : NotFound("Order Not Found With Given Id");
+        }
+
+
+        [HttpGet("{id:guid}/confirm")]
+        public async Task<IActionResult> Confirm(Guid id)
+        {
+            var order = await _mediator.Send(new ConfirmOrderCommand { Id = id });
+
+            return order != null ? Ok(_mapper.Map<OrderViewModel>(order)) : NotFound("Order Not Found With Given Id");
         }
     }
 }

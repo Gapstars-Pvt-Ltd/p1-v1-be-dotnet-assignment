@@ -16,6 +16,6 @@ namespace API.Application.ViewModels.Orders
 
         public string Status { get; set; }
 
-        private List<OrderItem> OrderItems { get; set; }
+        public List<OrderItem> OrderItems { get; set; }
     }
 }

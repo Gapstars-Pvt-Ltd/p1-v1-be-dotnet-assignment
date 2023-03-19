@@ -10,7 +10,8 @@ namespace API.Mapping
     {
         public OrderProfile()
         {
-            CreateMap<Order, OrderViewModel>();
+            CreateMap<Order, OrderViewModel>()
+                .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.Items));
         }
     }
 }
