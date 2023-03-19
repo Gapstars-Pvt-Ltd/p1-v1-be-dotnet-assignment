@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MediatR;
 using Domain.Aggregates.FlightAggregate;
+using System.Linq;
+using API.Installers;
 
 namespace API
 {
@@ -26,19 +28,14 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers()
-                .AddNewtonsoftJson()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(typeof(Startup).Assembly));
-            
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            // get all Installer Instance that implment IInstall Interface
+            var installers = typeof(Startup).Assembly.ExportedTypes
+                .Where(x=> typeof(IInstaller).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract).Select(Activator.CreateInstance)
+                .Cast<IInstaller>().ToList();
 
-            services.AddMediatR(typeof(Startup));
+            // register All Installers
+            installers.ForEach(x => x.InstallService(services, Configuration));
 
-            services.AddOpenApiDocument(d => d.Title = "AcmeFlights API");
-
-            services.AddFlightsContext(
-                Configuration["Database:ConnectionString"],
-                typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
 
             services.AddScoped<IAirportRepository, AirportRepository>();
             services.AddScoped<IFlightRepository, FlightRepository>();
