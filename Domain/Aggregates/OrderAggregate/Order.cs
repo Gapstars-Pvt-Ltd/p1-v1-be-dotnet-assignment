@@ -1,4 +1,5 @@
 ﻿using Domain.Aggregates.FlightAggregate;
+using Domain.Events;
 using Domain.Exceptions;
 using Domain.SeedWork;
 using System;
@@ -37,7 +38,9 @@ namespace Domain.Aggregates.OrderAggregate
 
         public void ConfirmOrder() 
         {
-            State = OrderState.Confirmed; 
+            State = OrderState.Confirmed;
+
+            AddDomainEvent(new OrderConfirmedEvent(this, CustomerId));
         }
     }
 

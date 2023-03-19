@@ -27,13 +27,13 @@ namespace API.Application.Commands
 
             Flight flight = await _flightRepository.GetAsync(orderToConfirm.FlightId);
 
-
-
             flight.MutateRateAvailability(orderToConfirm.FlightRateId, - orderToConfirm.SeatCount);
 
             _flightRepository.Update(flight); 
 
             await _orderRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+
+
 
             return orderToConfirm; 
         }
