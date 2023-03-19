@@ -61,6 +61,11 @@ namespace Domain.Aggregates.OrderAggregate
             }
         }
 
+        public void SetId(Guid id)
+        {
+            this.Id = id;
+        }
+
 
     }
 }
