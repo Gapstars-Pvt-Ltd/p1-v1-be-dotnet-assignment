@@ -3,15 +3,17 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace API.Migrations
 {
     [DbContext(typeof(FlightsContext))]
-    partial class FlightsContextModelSnapshot : ModelSnapshot
+    [Migration("20230319171712__add_order")]
+    partial class _add_order
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,14 +146,12 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("FlightRateId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
 
                     b.Property<int>("Qty")
                         .HasColumnType("integer");
@@ -228,6 +228,25 @@ namespace API.Migrations
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.OwnsOne("Domain.Common.Price", "Price", b1 =>
+                        {
+                            b1.Property<Guid>("OrderItemId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<int>("Currency")
+                                .HasColumnType("integer");
+
+                            b1.Property<decimal>("Value")
+                                .HasColumnType("numeric");
+
+                            b1.HasKey("OrderItemId");
+
+                            b1.ToTable("OrderItems");
+
+                            b1.WithOwner()
+                                .HasForeignKey("OrderItemId");
+                        });
                 });
 #pragma warning restore 612, 618
         }

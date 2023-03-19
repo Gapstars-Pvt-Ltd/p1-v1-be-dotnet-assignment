@@ -20,9 +20,23 @@ namespace Domain.Aggregates.FlightAggregate
             Available = available;
         }
 
+
+
         public void ChangePrice(Price price)
         {
             Price = price;
+        }
+
+        public bool IsOnStock(double OrderQty)
+        {
+           if( this.Available > OrderQty)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public void MutateAvailability(int quantity)
