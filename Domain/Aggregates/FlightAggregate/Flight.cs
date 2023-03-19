@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using Domain.Aggregates.AirportAggregate;
 using Domain.Common;
 using Domain.Events;
 using Domain.SeedWork;
@@ -11,7 +13,13 @@ namespace Domain.Aggregates.FlightAggregate
     {
         public Guid OriginAirportId { get; private set; }
         public Guid DestinationAirportId { get; private set; }
-        
+
+        [NotMapped]
+        public Airport OriginAirport { get; private set; }
+
+        [NotMapped]
+        public Airport DestinationAirport { get; private set; }
+
         public DateTimeOffset Departure { get; private set; }
         public DateTimeOffset Arrival { get; private set; }
 

@@ -16,13 +16,13 @@ namespace Infrastructure.EntityConfigurations
 
             builder.Property("Arrival").IsRequired();
             builder.Property("Departure").IsRequired();
-            
-            builder.HasOne<Airport>()
+
+            builder.HasOne(i => i.OriginAirport)
                 .WithMany()
                 .IsRequired()
                 .HasForeignKey("OriginAirportId");
-            
-            builder.HasOne<Airport>()
+
+            builder.HasOne(i => i.DestinationAirport)
                 .WithMany()
                 .IsRequired()
                 .HasForeignKey("DestinationAirportId");
