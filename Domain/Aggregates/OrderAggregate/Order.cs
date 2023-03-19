@@ -36,11 +36,27 @@ namespace Domain.Aggregates.OrderAggregate
             SeatCount = seatCount;
         }
 
+        public void UpdateSeatCount(int newSeatCount)
+        {
+            if (!IsFrozen())
+            {
+                SeatCount = newSeatCount;
+            }
+        }
+
         public void ConfirmOrder() 
         {
-            State = OrderState.Confirmed;
+            if (!IsFrozen()) 
+            {
+                State = OrderState.Confirmed;
 
-            AddDomainEvent(new OrderConfirmedEvent(this, CustomerId));
+                AddDomainEvent(new OrderConfirmedEvent(this, CustomerId));
+            }            
+        }
+
+        private bool IsFrozen() 
+        {
+            return this.State == OrderState.Confirmed;
         }
     }
 
