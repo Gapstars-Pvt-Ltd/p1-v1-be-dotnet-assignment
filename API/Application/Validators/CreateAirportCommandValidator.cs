@@ -1,4 +1,4 @@
-using API.Application.Commands;
+using API.Application.Commands.Airports;
 using FluentValidation;
 
 namespace API.Application.Validators

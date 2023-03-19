@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Domain.Aggregates.AirportAggregate;
+using Domain.Aggregates.CustomerAggregate;
 using Domain.Aggregates.FlightAggregate;
 using Domain.SeedWork;
 using Infrastructure.EntityConfigurations;
@@ -17,7 +18,9 @@ namespace Infrastructure
         public DbSet<FlightRate> FlightRates { get; set; }
 
         public DbSet<Airport> Airports { get; set; }
-        
+
+        public DbSet<Customer> Customers { get; set; }
+
         private readonly IMediator _mediator;
         
         public FlightsContext(DbContextOptions<FlightsContext> options) : base(options) { }

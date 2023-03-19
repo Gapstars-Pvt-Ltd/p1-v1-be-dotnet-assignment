@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using API.Application.Commands;
+using API.Application.Commands.Airports;
 using API.Application.ViewModels;
 using AutoMapper;
 using MediatR;
