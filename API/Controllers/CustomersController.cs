@@ -2,9 +2,12 @@
 using API.Application.Commands.Customers.CreateCustomer;
 using API.Application.Commands.Customers.GetCustomer;
 using API.Application.Commands.Customers.GetCustomers;
+using API.Application.Commands.Customers.GetOrders;
 using API.Application.Commands.Flights.GetAllFlights;
+using API.Application.Commands.Orders.ConfirmOrder;
 using API.Application.ViewModels;
 using API.Application.ViewModels.Customers;
+using API.Application.ViewModels.Orders;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -56,6 +59,14 @@ namespace API.Controllers
             return customer != null
                 ? Ok(customer)
                 : NotFound(new { error = "Customer not found with given Id" });
+        }
+
+        [HttpGet("{id:guid}/orders")]
+        public async Task<IActionResult> Orders(Guid id)
+        {
+            var order = await _mediator.Send(new GetOrdersByCutomerQuery { CustomerId = id });
+
+            return order != null ? Ok(order) : NotFound("Order Not Found With Given Id");
         }
     }
 }

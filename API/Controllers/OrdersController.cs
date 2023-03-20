@@ -2,6 +2,7 @@
 using API.Application.Commands.Flights.GetFlight;
 using API.Application.Commands.Orders.ConfirmOrder;
 using API.Application.Commands.Orders.CreateOrder;
+using API.Application.Commands.Orders.GetAllOrder;
 using API.Application.Commands.Orders.GetOrder;
 using API.Application.Commands.Orders.UpdateOrder;
 using API.Application.ViewModels;
@@ -44,6 +45,15 @@ namespace API.Controllers
             var order = await _mediator.Send(new GetOrderQuery { Id = id });
            
             return order != null ? Ok(_mapper.Map<OrderViewModel>(order)) : NotFound("Order Not Found With Given Id");
+        }
+
+
+        [HttpGet()]
+        public async Task<IActionResult> GetAll()
+        {
+            var order = await _mediator.Send(new GetAllOrderQuery { });
+
+            return order != null ? Ok(order) : NotFound("Order Not Found With Given Id");
         }
 
 

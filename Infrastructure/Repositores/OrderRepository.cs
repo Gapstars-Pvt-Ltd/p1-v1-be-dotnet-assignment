@@ -91,6 +91,16 @@ namespace Infrastructure.Repositores
             return CurrentOrder;
         }
 
+        public async Task<List<Order>> GetAllAsync()
+        {
+            return await _context.Orders.ToListAsync();
+        }
+
+        public async Task<List<Order>> GetAllAsyncByCustomer(Guid customerId)
+        {
+            return await _context.Orders.Where(x=>x.CustomerId == customerId).ToListAsync();
+        }
+
         public async Task<Order> GetAsync(Guid orderId)
         {
            return await _context.Orders.Include(x=>x.Items).Where(x=>x.Id == orderId).SingleOrDefaultAsync();

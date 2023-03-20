@@ -19,5 +19,9 @@ namespace Domain.Aggregates.OrderAggregate
         Task<Order> ConfirmAsync(Guid orderId);
 
         Task<Order> GetAsync(Guid orderId);
+
+        Task<List<Order>> GetAllAsync();
+
+        Task<List<Order>> GetAllAsyncByCustomer(Guid customerId);
     }
 }
