@@ -8,6 +8,8 @@ using API.Application.Commands.Orders.ConfirmOrder;
 using API.Application.ViewModels;
 using API.Application.ViewModels.Customers;
 using API.Application.ViewModels.Orders;
+using API.Contracts;
+using API.Contracts.V1;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +17,11 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
-namespace API.Controllers
+namespace API.Controllers.V1
 {
     [ApiController]
-    [Route("[controller]")]
-    public class CustomersController  : ControllerBase
+
+    public class CustomersController : ControllerBase
     {
 
 
@@ -34,7 +36,7 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost]
+        [HttpPost(ApiRoutes.Customer.Create)]
         public async Task<IActionResult> Create([FromBody] CreateCustomerCommand command)
         {
             var customer = await _mediator.Send(command);
@@ -42,8 +44,9 @@ namespace API.Controllers
             return Ok(_mapper.Map<CustomerViewModel>(customer));
         }
 
-        [HttpGet]
-        [Route("")]
+
+        [HttpGet(ApiRoutes.Customer.GetAll)]
+
         public async Task<IActionResult> GetCustomers()
         {
             var customers = await _mediator.Send(new GetAllCustomersQuery { });
@@ -51,7 +54,7 @@ namespace API.Controllers
             return Ok(customers);
         }
 
-        [HttpGet("{id:guid}")]
+        [HttpGet(ApiRoutes.Customer.Get)]
         public async Task<IActionResult> GetCutomerById(Guid id)
         {
             var customer = await _mediator.Send(new GetCustomerQuery { Id = id });
@@ -61,7 +64,7 @@ namespace API.Controllers
                 : NotFound(new { error = "Customer not found with given Id" });
         }
 
-        [HttpGet("{id:guid}/orders")]
+        [HttpGet(ApiRoutes.Customer.GetOrderByCustomer)]
         public async Task<IActionResult> Orders(Guid id)
         {
             var order = await _mediator.Send(new GetOrdersByCutomerQuery { CustomerId = id });

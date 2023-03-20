@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
-namespace API.Controllers
+namespace API.Controllers.V1
 {
     [ApiController]
     [Route("[controller]")]
@@ -43,7 +43,7 @@ namespace API.Controllers
         public async Task<IActionResult> Get(Guid id)
         {
             var order = await _mediator.Send(new GetOrderQuery { Id = id });
-           
+
             return order != null ? Ok(_mapper.Map<OrderViewModel>(order)) : NotFound("Order Not Found With Given Id");
         }
 

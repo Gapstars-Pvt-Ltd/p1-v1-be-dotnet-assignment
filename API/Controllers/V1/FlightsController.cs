@@ -6,15 +6,17 @@ using API.Application.Commands.Flights.GetAllFlights;
 using API.Application.Commands.Flights.GetAvailableFlights;
 using API.Application.Commands.Flights.GetFlight;
 using API.Application.ViewModels.Flights;
+using API.Contracts;
+using API.Contracts.V1;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace API.Controllers;
+namespace API.Controllers.V1;
 
 [ApiController]
-[Route("[controller]")]
+
 public class FlightsController : ControllerBase
 {
     private readonly ILogger<AirportsController> _logger;
@@ -28,8 +30,8 @@ public class FlightsController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet]
-    [Route("")]
+    [HttpGet(ApiRoutes.Flight.GetAll)]
+
     public async Task<IActionResult> GetFlights()
     {
         var flights = await _mediator.Send(new GetALlAirportQuery { });
@@ -37,8 +39,8 @@ public class FlightsController : ControllerBase
         return Ok(flights);
     }
 
-    
-    [HttpGet("{id:guid}")]
+
+    [HttpGet(ApiRoutes.Flight.Get)]
     public async Task<IActionResult> Get(Guid id)
     {
         var flight = await _mediator.Send(new GetFlightQuery { Id = id });
@@ -46,8 +48,7 @@ public class FlightsController : ControllerBase
         return flight != null ? Ok(flight) : NotFound("Flight Not Found With Given Id");
     }
 
-    [HttpGet]
-    [Route("Search")]
+    [HttpGet(ApiRoutes.Flight.Search)]
     public async Task<IActionResult> GetAvailableFlights(string AirPortCode)
     {
         var flights = await _mediator.Send(new GetAvailableFlightsQuery { AirPortCode = AirPortCode });
