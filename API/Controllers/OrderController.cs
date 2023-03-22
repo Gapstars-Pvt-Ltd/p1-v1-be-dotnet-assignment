@@ -10,14 +10,14 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AirportsController : ControllerBase
+    public class OrderController : ControllerBase
     {
-        private readonly ILogger<AirportsController> _logger;
+        private readonly ILogger<OrderController> _logger;
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
-        public AirportsController(
-            ILogger<AirportsController> logger,
+        public OrderController(
+            ILogger<OrderController> logger,
             IMediator mediator,
             IMapper mapper)
         {
@@ -27,11 +27,19 @@ namespace API.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Store([FromBody]CreateAirportCommand command)
+        public async Task<IActionResult> Store([FromBody]CreateOrderCommand command)
+        {
+            var order = await _mediator.Send(command);
+
+            return Created("~/api/Order", order);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Confirm([FromBody] UpdateOrderCommand command)
         {
             var airport = await _mediator.Send(command);
 
-            return Ok(_mapper.Map<AirportViewModel>(airport));
+            return Ok(_mapper.Map<OrderViewModel>(airport));
         }
     }
 }

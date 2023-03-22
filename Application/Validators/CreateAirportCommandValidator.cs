@@ -1,7 +1,9 @@
-using API.Application.Commands;
+
+
+using Application.Commands;
 using FluentValidation;
 
-namespace API.Application.Validators
+namespace Application.Validators
 {
     public class CreateAirportCommandValidator : AbstractValidator<CreateAirportCommand>
     {

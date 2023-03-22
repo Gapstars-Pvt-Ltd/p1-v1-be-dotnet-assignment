@@ -1,4 +1,4 @@
-using API.Application.ViewModels;
+using Application.ViewModels;
 using AutoMapper;
 using Domain.Aggregates.AirportAggregate;
 

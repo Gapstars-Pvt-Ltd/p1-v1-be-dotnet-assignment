@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MediatR;
+using Domain.Aggregates.FlightAggregate;
+using Domain.Aggregates.OrderAggregate;
+using Application.Core.Middlewares;
 
 namespace API
 {
@@ -27,12 +30,13 @@ namespace API
         {
             services.AddControllers()
                 .AddNewtonsoftJson()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(typeof(Startup).Assembly));
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(AppDomain.CurrentDomain.Load("Application.Core")));
             
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddMediatR(typeof(Startup));
-
+            services.AddMediatR(AppDomain.CurrentDomain.Load("Application.Query"));
+            services.AddMediatR(AppDomain.CurrentDomain.Load("Application.Command"));
             services.AddOpenApiDocument(d => d.Title = "AcmeFlights API");
 
             services.AddFlightsContext(
@@ -40,6 +44,8 @@ namespace API
                 typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
 
             services.AddScoped<IAirportRepository, AirportRepository>();
+            services.AddScoped<IFlightRepository, FlightRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +59,7 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

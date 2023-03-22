@@ -52,6 +52,10 @@ We like to use some modern best practices in this assignment and try to point yo
 - Start the Postgres database with `docker-compose up -d` (the application is already configured properly, but if you want to connect to the db directly you can see the credentials in the `docker-compose.yml` file)
 - You can now run the API project and everything should work. Upon start the application will run the migrations and seed data to the database.
 
+## Instructions
+
+- Make sure the API project is the start up project
+
 ## References 
 
 - https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/

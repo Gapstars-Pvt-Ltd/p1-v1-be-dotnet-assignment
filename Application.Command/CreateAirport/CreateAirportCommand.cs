@@ -1,7 +1,9 @@
+
+
 using Domain.Aggregates.AirportAggregate;
 using MediatR;
 
-namespace API.Application.Commands
+namespace Application.Commands
 {
     public class CreateAirportCommand : IRequest<Airport>
     {

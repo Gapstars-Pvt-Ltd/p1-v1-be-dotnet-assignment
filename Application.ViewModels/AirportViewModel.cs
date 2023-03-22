@@ -1,6 +1,6 @@
 using System;
 
-namespace API.Application.ViewModels
+namespace Application.ViewModels
 {
     public class AirportViewModel
     {

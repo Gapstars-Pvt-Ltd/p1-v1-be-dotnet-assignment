@@ -7,7 +7,7 @@ namespace Domain.Aggregates.FlightAggregate
     {
         public string Name { get; private set; }
         public Price Price { get; private set; }
-        public int Available { get; private set; }
+        public int Available { get; set; }
 
         protected FlightRate()
         {
