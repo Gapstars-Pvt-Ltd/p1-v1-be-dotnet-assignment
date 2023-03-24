@@ -3,6 +3,7 @@ using API.Application.ViewModels.Orders;
 using AutoMapper;
 using Domain.Aggregates.AirportAggregate;
 using Domain.Aggregates.OrderAggregate;
+using System.Collections.Generic;
 
 namespace API.Mapping
 {
@@ -12,6 +13,12 @@ namespace API.Mapping
         {
             CreateMap<Order, OrderViewModel>()
                 .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.Items));
+
+           
+            CreateMap<OrderItem, OrderItemViewModel>();
+
+           
+
         }
     }
 }

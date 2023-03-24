@@ -9,11 +9,14 @@ using API.Application.ViewModels;
 using API.Application.ViewModels.Customers;
 using API.Application.ViewModels.Orders;
 using AutoMapper;
+using Domain.Aggregates.OrderAggregate;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using YamlDotNet.Core;
 
 namespace API.Controllers.V1
 {
@@ -55,7 +58,7 @@ namespace API.Controllers.V1
         {
             var order = await _mediator.Send(new GetAllOrderQuery { });
 
-            return order != null ? Ok(order) : NotFound("Order Not Found With Given Id");
+            return order != null ? Ok(_mapper.Map<List<Order>, List<OrderViewModel>>(order)) : NotFound("Order Not Found With Given Id");
         }
 
 

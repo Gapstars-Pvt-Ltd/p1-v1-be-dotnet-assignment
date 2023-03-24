@@ -27,7 +27,7 @@ namespace API.Application.Commands.Orders.CreateOrder
             var items = request.OrderItems.Select(item => new OrderItem
             {
                 FlightRateId = item.FlightRateId,
-                Qty = item.Nos
+                Qty = item.Qty
             }).ToList();
 
             var order = new Order(

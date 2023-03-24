@@ -93,7 +93,7 @@ namespace Infrastructure.Repositores
 
         public async Task<List<Order>> GetAllAsync()
         {
-            return await _context.Orders.ToListAsync();
+            return await _context.Orders.Include(x=>x.Items).ToListAsync();
         }
 
         public async Task<List<Order>> GetAllAsyncByCustomer(Guid customerId)
