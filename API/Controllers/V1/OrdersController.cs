@@ -57,7 +57,7 @@ namespace API.Controllers.V1
         }
 
 
-        [HttpGet("{id:guid}/confirm")]
+        [HttpPut("{id:guid}/confirm")]
         public async Task<IActionResult> Confirm(Guid id)
         {
             var order = await _mediator.Send(new ConfirmOrderCommand { Id = id });
