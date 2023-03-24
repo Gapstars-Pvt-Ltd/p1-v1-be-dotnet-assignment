@@ -6,6 +6,7 @@ using API.Application.Commands.Orders.GetAllOrder;
 using API.Application.Commands.Orders.GetOrder;
 using API.Application.Commands.Orders.UpdateOrder;
 using API.Application.ViewModels;
+using API.Application.ViewModels.Customers;
 using API.Application.ViewModels.Orders;
 using AutoMapper;
 using MediatR;
@@ -36,11 +37,12 @@ namespace API.Controllers.V1
         {
             var order = await _mediator.Send(command);
 
+            return CreatedAtRoute("GetOrderById", new { id = order.Id }, _mapper.Map<OrderViewModel>(order));
             return Ok(_mapper.Map<OrderViewModel>(order));
         }
 
-        [HttpGet("{id:guid}")]
-        public async Task<IActionResult> Get(Guid id)
+        [HttpGet("{id:guid}",Name = "GetOrderById")]
+        public async Task<IActionResult> GetOrderById(Guid id)
         {
             var order = await _mediator.Send(new GetOrderQuery { Id = id });
 
