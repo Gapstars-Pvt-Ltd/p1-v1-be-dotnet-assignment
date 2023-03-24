@@ -63,17 +63,19 @@ namespace API.Controllers.V1
         {
             var customer = await _mediator.Send(new GetCustomerQuery { Id = id });
 
+            // Returns a response with the requested customer as the content, or a "not found" error if the customer does not exist.
             return customer != null
                 ? Ok(customer)
                 : NotFound(new { error = "Customer not found with given Id" });
         }
 
+        // This action method handles the HTTP GET request to retrieve all orders for a specific customer.
         [HttpGet(ApiRoutes.Customer.GetOrderByCustomer)]
         public async Task<IActionResult> Orders(Guid id)
         {
             var order = await _mediator.Send(new GetOrdersByCutomerQuery { CustomerId = id });
 
-            // Returns a response with the requested customer as the content, or a "not found" error if the customer does not exist.
+            // Returns a response with all orders for the given customer as the content, or a "not found" error if no orders exist.
             return order != null ? Ok(order) : NotFound("Order Not Found With Given Id");
         }
     }
