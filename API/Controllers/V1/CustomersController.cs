@@ -41,7 +41,8 @@ namespace API.Controllers.V1
         {
             var customer = await _mediator.Send(command);
 
-            return Ok(_mapper.Map<CustomerViewModel>(customer));
+            return CreatedAtRoute("GetCustomerById", new { id = customer.Id }, _mapper.Map<CustomerViewModel>(customer));
+
         }
 
 
@@ -54,8 +55,8 @@ namespace API.Controllers.V1
             return Ok(customers);
         }
 
-        [HttpGet(ApiRoutes.Customer.Get)]
-        public async Task<IActionResult> GetCutomerById(Guid id)
+        [HttpGet(ApiRoutes.Customer.Get, Name = "GetCustomerById")]
+        public async Task<IActionResult> GetCustomerById(Guid id)
         {
             var customer = await _mediator.Send(new GetCustomerQuery { Id = id });
 
