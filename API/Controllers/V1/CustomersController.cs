@@ -36,18 +36,20 @@ namespace API.Controllers.V1
             _mapper = mapper;
         }
 
+        // This action method handles the HTTP POST request to create a new customer.
         [HttpPost(ApiRoutes.Customer.Create)]
         public async Task<IActionResult> Create([FromBody] CreateCustomerCommand command)
         {
             var customer = await _mediator.Send(command);
 
+            // Returns a response indicating that the resource was created successfully.
             return CreatedAtRoute("GetCustomerById", new { id = customer.Id }, _mapper.Map<CustomerViewModel>(customer));
 
         }
 
 
+        // This action method handles the HTTP GET request to retrieve all customers.
         [HttpGet(ApiRoutes.Customer.GetAll)]
-
         public async Task<IActionResult> GetCustomers()
         {
             var customers = await _mediator.Send(new GetAllCustomersQuery { });
@@ -55,6 +57,7 @@ namespace API.Controllers.V1
             return Ok(customers);
         }
 
+        // This action method handles the HTTP GET request to retrieve a customer by Id.
         [HttpGet(ApiRoutes.Customer.Get, Name = "GetCustomerById")]
         public async Task<IActionResult> GetCustomerById(Guid id)
         {
@@ -70,6 +73,7 @@ namespace API.Controllers.V1
         {
             var order = await _mediator.Send(new GetOrdersByCutomerQuery { CustomerId = id });
 
+            // Returns a response with the requested customer as the content, or a "not found" error if the customer does not exist.
             return order != null ? Ok(order) : NotFound("Order Not Found With Given Id");
         }
     }
