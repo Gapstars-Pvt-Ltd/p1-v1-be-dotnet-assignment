@@ -65,7 +65,7 @@ namespace API.Controllers.V1
 
             // Returns a response with the requested customer as the content, or a "not found" error if the customer does not exist.
             return customer != null
-                ? Ok(customer)
+                ? Ok(_mapper.Map<CustomerViewModel>(customer))
                 : NotFound(new { error = "Customer not found with given Id" });
         }
 
