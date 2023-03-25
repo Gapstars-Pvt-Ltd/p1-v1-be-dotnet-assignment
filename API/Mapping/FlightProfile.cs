@@ -11,6 +11,7 @@ namespace API.Mapping
         public FlightProfile() {
 
             CreateMap<AvailableFlightsDomainViewModel, AvailableFlightsViewModel>().ReverseMap();
+            CreateMap<Flight,FlightViewModel>().ReverseMap();
         }
     }
 }

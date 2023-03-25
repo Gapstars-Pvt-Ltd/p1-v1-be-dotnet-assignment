@@ -4,6 +4,7 @@ namespace API.Application.ViewModels.Flights
 {
     public class AvailableFlightsViewModel
     {
+        public Guid Id { get; set; }
         public string DepartureAirportCode { get; set; }
         public string ArrivalAirportCode { get; set; }
         public DateTimeOffset Departure { get; set; }

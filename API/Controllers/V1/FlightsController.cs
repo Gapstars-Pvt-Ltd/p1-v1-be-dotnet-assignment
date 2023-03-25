@@ -6,9 +6,11 @@ using API.Application.Commands.Flights.GetAllFlights;
 using API.Application.Commands.Flights.GetAvailableFlights;
 using API.Application.Commands.Flights.GetFlight;
 using API.Application.ViewModels.Flights;
+using API.Application.ViewModels.Orders;
 using API.Contracts;
 using API.Contracts.V1;
 using AutoMapper;
+using Domain.Aggregates.FlightAggregate;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -36,7 +38,7 @@ public class FlightsController : ControllerBase
     {
         var flights = await _mediator.Send(new GetALlAirportQuery { });
 
-        return Ok(flights);
+        return Ok(_mapper.Map<List<Flight>,List<FlightViewModel>>(flights));
     }
 
 
@@ -45,7 +47,7 @@ public class FlightsController : ControllerBase
     {
         var flight = await _mediator.Send(new GetFlightQuery { Id = id });
 
-        return flight != null ? Ok(flight) : NotFound("Flight Not Found With Given Id");
+        return flight != null ? Ok(_mapper.Map<FlightViewModel>(flight)) : NotFound("Flight Not Found With Given Id");
     }
 
     [HttpGet(ApiRoutes.Flight.Search)]
@@ -53,7 +55,7 @@ public class FlightsController : ControllerBase
     {
         var flights = await _mediator.Send(new GetAvailableFlightsQuery { AirPortCode = AirPortCode });
 
-        return Ok(flights);
+        return Ok(_mapper.Map<List<AvailableFlightsDomainViewModel>, List<AvailableFlightsViewModel>>(flights));
     }
 
 }

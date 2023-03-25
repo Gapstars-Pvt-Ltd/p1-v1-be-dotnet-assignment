@@ -56,6 +56,7 @@ namespace Infrastructure.Repositores
 
             var availableFlights = flights.Select(flight => new AvailableFlightsDomainViewModel
             {
+                Id = flight.Id,
                 Arrival = flight.Arrival,
                 Departure = flight.Departure,
                 ArrivalAirportCode = AirportCode,
@@ -73,7 +74,7 @@ namespace Infrastructure.Repositores
 
         public async Task<List<Flight>> GetAll()
         {
-          return  await  _context.Flights.ToListAsync();
+          return  await  _context.Flights.Include(x=>x.Rates).ToListAsync();
         }
 
     }
