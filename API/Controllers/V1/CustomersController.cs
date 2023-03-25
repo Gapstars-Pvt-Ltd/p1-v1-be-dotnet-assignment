@@ -11,11 +11,14 @@ using API.Application.ViewModels.Orders;
 using API.Contracts;
 using API.Contracts.V1;
 using AutoMapper;
+using Domain.Aggregates.OrderAggregate;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+
 
 namespace API.Controllers.V1
 {
@@ -76,7 +79,7 @@ namespace API.Controllers.V1
             var order = await _mediator.Send(new GetOrdersByCutomerQuery { CustomerId = id });
 
             // Returns a response with all orders for the given customer as the content, or a "not found" error if no orders exist.
-            return order != null ? Ok(order) : NotFound("Order Not Found With Given Id");
+            return order.Count > 0 ? Ok(_mapper.Map<List<Order>, List<OrderViewModel>>(order)) : NotFound("Order Not Found With Given Id");
         }
     }
 }

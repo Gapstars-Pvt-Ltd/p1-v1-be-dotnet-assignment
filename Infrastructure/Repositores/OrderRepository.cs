@@ -98,7 +98,7 @@ namespace Infrastructure.Repositores
 
         public async Task<List<Order>> GetAllAsyncByCustomer(Guid customerId)
         {
-            return await _context.Orders.Where(x=>x.CustomerId == customerId).ToListAsync();
+            return await _context.Orders.Include(x => x.Items).Where(x=>x.CustomerId == customerId).ToListAsync();
         }
 
         public async Task<Order> GetAsync(Guid orderId)
@@ -113,7 +113,8 @@ namespace Infrastructure.Repositores
             {
                 throw new OrderDomainException("You Cannot Change status of  Confrim order !");
             }
-           _context.Orders.Update(order);
+
+           _context.Orders.Update(Currentorder);
             _context.SaveChanges();
             return order;
         }

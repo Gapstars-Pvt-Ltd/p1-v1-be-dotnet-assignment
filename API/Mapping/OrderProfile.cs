@@ -11,10 +11,11 @@ namespace API.Mapping
     {
         public OrderProfile()
         {
+            // create Map for mapping order to order view model 
             CreateMap<Order, OrderViewModel>()
                 .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.Items));
 
-           
+           //create map for Order Item convert to orderItemVieModel
             CreateMap<OrderItem, OrderItemViewModel>();
 
            
