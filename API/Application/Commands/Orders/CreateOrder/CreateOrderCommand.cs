@@ -7,12 +7,9 @@ using System.Collections.Generic;
 
 namespace API.Application.Commands.Orders.CreateOrder
 {
-    public class CreateOrderCommand : IRequest<Order>
+    public class CreateOrderCommand : IRequest<OrderViewModel>
     {
 
-        public DateTimeOffset OrderedDate { get; private set; }
-
-        public string OrderNo { get; set; }
 
         public Guid CustomerId { get; private set; }
 
@@ -22,10 +19,9 @@ namespace API.Application.Commands.Orders.CreateOrder
 
         public List<OrderItemViewModel> OrderItems { get; set; }
 
-        public CreateOrderCommand(DateTimeOffset orderedDate, string orderNo, Guid customerId, Guid flightId, List<OrderItemViewModel> orderItems)
+        public CreateOrderCommand( Guid customerId, Guid flightId, List<OrderItemViewModel> orderItems)
         {
-            OrderedDate = orderedDate;
-            OrderNo = orderNo;
+           
             CustomerId = customerId;
             FlightId = flightId;
             OrderItems = orderItems;

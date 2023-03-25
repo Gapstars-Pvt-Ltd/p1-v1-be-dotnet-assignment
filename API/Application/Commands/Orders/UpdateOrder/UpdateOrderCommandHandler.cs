@@ -27,8 +27,7 @@ namespace API.Application.Commands.Orders.UpdateOrder
             }).ToList();
 
             var order = new Order(
-                orderedDate: request.OrderedDate,
-                orderNo: request.OrderNo,
+                
                 customerId: request.CustomerId,
                 flightId: request.FlightId,
                 //todo : need to implment enum to order status 

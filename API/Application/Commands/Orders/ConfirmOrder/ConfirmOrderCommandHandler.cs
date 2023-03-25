@@ -1,23 +1,37 @@
-﻿using Domain.Aggregates.OrderAggregate;
+﻿using API.Application.ViewModels.Orders;
+using AutoMapper;
+using Domain.Aggregates.OrderAggregate;
 using MediatR;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace API.Application.Commands.Orders.ConfirmOrder
 {
-    public class ConfirmOrderCommandHandler : IRequestHandler<ConfirmOrderCommand, Order>
+    public class ConfirmOrderCommandHandler : IRequestHandler<ConfirmOrderCommand, OrderViewModel>
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IMapper _mapper;
 
-        public ConfirmOrderCommandHandler(IOrderRepository orderRepository)
+        public ConfirmOrderCommandHandler(IOrderRepository orderRepository, IMapper mapper)
         {
             _orderRepository = orderRepository;
+            _mapper = mapper;
         }
 
-        public async Task<Order> Handle(ConfirmOrderCommand request, CancellationToken cancellationToken)
+        public async Task<OrderViewModel> Handle(ConfirmOrderCommand request, CancellationToken cancellationToken)
         {
-          return await  _orderRepository.ConfirmAsync(request.Id);
+            var order = await _orderRepository.GetAsync(request.Id);
+
+            if (order != null)
+            {
+                var orderViewModel = _mapper.Map<OrderViewModel>(order);
+                orderViewModel.Total = order.Items.Sum(x => x.Qty * x.Price);
+                return orderViewModel;
+            }
+
+            return null;
         }
 
        

@@ -40,8 +40,8 @@ namespace API.Controllers.V1
         {
             var order = await _mediator.Send(command);
 
-            return CreatedAtRoute("GetOrderById", new { id = order.Id }, _mapper.Map<OrderViewModel>(order));
-            return Ok(_mapper.Map<OrderViewModel>(order));
+            return CreatedAtRoute("GetOrderById", new { id = order.Id },order);
+            
         }
 
         [HttpGet("{id:guid}",Name = "GetOrderById")]
@@ -49,7 +49,7 @@ namespace API.Controllers.V1
         {
             var order = await _mediator.Send(new GetOrderQuery { Id = id });
 
-            return order != null ? Ok(_mapper.Map<OrderViewModel>(order)) : NotFound("Order Not Found With Given Id");
+            return order != null ? Ok(order) : NotFound("Order Not Found With Given Id");
         }
 
 
@@ -58,7 +58,7 @@ namespace API.Controllers.V1
         {
             var order = await _mediator.Send(new GetAllOrderQuery { });
 
-            return order != null ? Ok(_mapper.Map<List<Order>, List<OrderViewModel>>(order)) : NotFound("Order Not Found With Given Id");
+            return order != null ? Ok(order) : NotFound("Order Not Found With Given Id");
         }
 
 

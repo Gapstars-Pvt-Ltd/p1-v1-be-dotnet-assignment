@@ -17,6 +17,8 @@ namespace API.Application.ViewModels.Orders
 
         public string Status { get; set; }
 
+        public double Total { get; set; }
+
         public List<OrderItemViewModel> OrderItems { get; set; }
     }
 }

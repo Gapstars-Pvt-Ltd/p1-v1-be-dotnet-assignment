@@ -3,6 +3,7 @@ using Domain.Events;
 using Domain.Exceptions;
 using Domain.SeedWork;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,8 @@ namespace Infrastructure.Repositores
                 }
                 
             }
+            order.OrderNo = GetNextOrderRefNo();
+           
             return  _context.Orders.Add(order).Entity;
         }
 
@@ -117,6 +120,21 @@ namespace Infrastructure.Repositores
            _context.Orders.Update(Currentorder);
             _context.SaveChanges();
             return order;
+        }
+
+        //todo : move business logic to separate service class 
+        private string GetNextOrderRefNo()
+        {
+            try
+            {
+                var Refno = Convert.ToString(DateTime.Now.Ticks);
+                return Refno;
+              
+            }catch(Exception)
+            {
+                return "" ;
+            }
+           
         }
 
        

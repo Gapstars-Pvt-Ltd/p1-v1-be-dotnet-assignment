@@ -31,10 +31,9 @@ namespace Domain.Aggregates.OrderAggregate
         public Order() { 
            _items= new List<OrderItem>();
         }
-        public Order(DateTimeOffset orderedDate, string orderNo, Guid customerId, Guid flightId, string status,List<OrderItem> items):this()
+        public Order( Guid customerId, Guid flightId, string status,List<OrderItem> items):this()
         {
-            OrderedDate = orderedDate;
-            OrderNo = orderNo;
+            OrderedDate = DateTime.Now;
             CustomerId = customerId;
             FlightId = flightId;
             Status = status;
