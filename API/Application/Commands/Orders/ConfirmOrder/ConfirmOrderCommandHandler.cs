@@ -23,6 +23,7 @@ namespace API.Application.Commands.Orders.ConfirmOrder
         public async Task<OrderViewModel> Handle(ConfirmOrderCommand request, CancellationToken cancellationToken)
         {
             var order = await _orderRepository.GetAsync(request.Id);
+           await _orderRepository.ConfirmAsync(request.Id);
 
             if (order != null)
             {

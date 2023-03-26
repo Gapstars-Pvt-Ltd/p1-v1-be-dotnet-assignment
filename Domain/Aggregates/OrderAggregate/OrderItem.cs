@@ -19,9 +19,17 @@ namespace Domain.Aggregates.OrderAggregate
 
         public OrderItem(Guid flightRateId, double price, int qty):this()
         {
-            flightRateId = flightRateId;
+            FlightRateId = flightRateId;
             Price = price;
             Qty = qty;
+        }
+
+        public OrderItem(Guid flightRateId, double price, int qty,Guid id) : this()
+        {
+            FlightRateId = flightRateId;
+            Price = price;
+            Qty = qty;
+            Id = id;
         }
     }
 }

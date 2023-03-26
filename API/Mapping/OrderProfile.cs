@@ -14,10 +14,10 @@ namespace API.Mapping
         {
             // create Map for mapping order to order view model 
             CreateMap<Order, OrderViewModel>()
-                .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.Items));
+                .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.Items)).ReverseMap();
 
            //create map for Order Item convert to orderItemVieModel
-            CreateMap<OrderItem, OrderItemViewModel>();
+            CreateMap<OrderItem, OrderItemViewModel>().ReverseMap();
 
           
 

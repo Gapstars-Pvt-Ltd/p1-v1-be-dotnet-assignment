@@ -4,6 +4,7 @@ namespace API.Application.ViewModels.Orders
 {
     public class OrderItemViewModel
     {
+        public Guid Id { get; set; }
         public Guid FlightRateId { get; set; }
         public double Price { get; set; }
 

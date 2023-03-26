@@ -6,21 +6,23 @@ using MediatR;
 
 namespace API.Application.Commands.Orders.UpdateOrder
 {
-    public class UpdateOrderCommand : IRequest<Order>
+    public class UpdateOrderCommand : IRequest<OrderViewModel>
     {
-        public DateTimeOffset OrderedDate { get; private set; }
+        public DateTimeOffset OrderedDate { get;  set; }
 
         public string OrderNo { get; set; }
 
-        public Guid CustomerId { get; private set; }
+        public Guid CustomerId { get;  set; }
 
-        public Guid FlightId { get; private set; }
+        public Guid FlightId { get;  set; }
 
-        public Guid Id { get; private set; }
+        public Guid Id { get;  set; }
+
+        public string Status { get; set; }
 
         public List<OrderItemViewModel> OrderItems { get; set; }
 
-        public UpdateOrderCommand(Guid id,DateTimeOffset orderedDate, string orderNo, Guid customerId, Guid flightId, List<OrderItemViewModel> orderItems)
+        public UpdateOrderCommand(Guid id,DateTimeOffset orderedDate, string orderNo, Guid customerId, Guid flightId,string status, List<OrderItemViewModel> orderItems)
         {
             OrderedDate = orderedDate;
             OrderNo = orderNo;
@@ -28,6 +30,7 @@ namespace API.Application.Commands.Orders.UpdateOrder
             FlightId = flightId;
             OrderItems = orderItems;
             Id = id;
+            Status = status;
         }
     }
 }

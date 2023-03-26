@@ -109,7 +109,7 @@ namespace Infrastructure.Repositores
            return await _context.Orders.Include(x=>x.Items).Where(x=>x.Id == orderId).SingleOrDefaultAsync();
         }
 
-        public  Order Update(Order order)
+        public  async Task<Order> Update(Order order)
         {
             var Currentorder =  _context.Orders.Where(x => x.Id == order.Id).SingleOrDefault();
             if (Currentorder.Status== "Confirm")
@@ -117,8 +117,8 @@ namespace Infrastructure.Repositores
                 throw new OrderDomainException("You Cannot Change status of  Confrim order !");
             }
 
-           _context.Orders.Update(Currentorder);
-            _context.SaveChanges();
+           _context.Orders.Update(order);
+          // await _context.SaveChangesAsync();
             return order;
         }
 

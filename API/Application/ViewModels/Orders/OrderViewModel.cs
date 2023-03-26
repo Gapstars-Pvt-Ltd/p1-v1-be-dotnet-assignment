@@ -6,14 +6,14 @@ namespace API.Application.ViewModels.Orders
 {
     public class OrderViewModel
     {
-        public Guid Id { get; private set; }
-        public DateTimeOffset OrderedDate { get; private set; }
+        public Guid Id { get;  set; }
+        public DateTimeOffset OrderedDate { get; set; }
 
         public string OrderNo { get; set; }
 
-        public Guid CustomerId { get; private set; }
+        public Guid CustomerId { get;  set; }
 
-        public Guid FlightId { get; private set; }
+        public Guid FlightId { get;  set; }
 
         public string Status { get; set; }
 
