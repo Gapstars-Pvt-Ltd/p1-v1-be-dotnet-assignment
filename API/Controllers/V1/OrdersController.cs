@@ -35,6 +35,7 @@ namespace API.Controllers.V1
             _mapper = mapper;
         }
 
+        //create orders 
         [HttpPost]
         public async Task<IActionResult> Order([FromBody] CreateOrderCommand command)
         {
@@ -43,7 +44,7 @@ namespace API.Controllers.V1
             return CreatedAtRoute("GetOrderById", new { id = order.Id },order);
             
         }
-
+        //get order by id and if not order is not found with give Id return not found Error 
         [HttpGet("{id:guid}",Name = "GetOrderById")]
         public async Task<IActionResult> GetOrderById(Guid id)
         {
@@ -52,7 +53,7 @@ namespace API.Controllers.V1
             return order != null ? Ok(order) : NotFound("Order Not Found With Given Id");
         }
 
-
+        //get all orders 
         [HttpGet()]
         public async Task<IActionResult> GetAll()
         {
@@ -61,7 +62,7 @@ namespace API.Controllers.V1
             return order != null ? Ok(order) : NotFound("Order Not Found With Given Id");
         }
 
-
+        //confrim order by id and if not order nor found with given id return not foun error 
         [HttpPut("{id:guid}/confirm")]
         public async Task<IActionResult> Confirm(Guid id)
         {
@@ -70,6 +71,7 @@ namespace API.Controllers.V1
             return order != null ? Ok(_mapper.Map<OrderViewModel>(order)) : NotFound("Order Not Found With Given Id");
         }
 
+        // update orders. if order status is Confrim order cannot be updated 
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateOrderCommand command)
         {

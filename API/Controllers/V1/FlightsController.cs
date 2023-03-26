@@ -41,7 +41,7 @@ public class FlightsController : ControllerBase
         return Ok(_mapper.Map<List<Flight>,List<FlightViewModel>>(flights));
     }
 
-
+    //get flights by its Id and if not found return notfound error 
     [HttpGet(ApiRoutes.Flight.Get)]
     public async Task<IActionResult> Get(Guid id)
     {
@@ -50,6 +50,7 @@ public class FlightsController : ControllerBase
         return flight != null ? Ok(_mapper.Map<FlightViewModel>(flight)) : NotFound("Flight Not Found With Given Id");
     }
 
+    //search flight by given airport code 
     [HttpGet(ApiRoutes.Flight.Search)]
     public async Task<IActionResult> GetAvailableFlights(string AirPortCode)
     {
