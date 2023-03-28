@@ -38,6 +38,7 @@ namespace Domain.Aggregates.OrderAggregate
             FlightId = flightId;
             Status = status;
            _items = items;
+          
         }
 
         public void AddItem(Guid flightRateId, double price, int qty)
@@ -46,7 +47,7 @@ namespace Domain.Aggregates.OrderAggregate
             _items.Add(item);
         }
 
-        public void ConfimOrder()
+        public void IsConfimOrder()
         {
             //todo : implment order status enum
            if(this.Status== "Confirm")

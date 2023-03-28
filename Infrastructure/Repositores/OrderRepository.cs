@@ -87,7 +87,7 @@ namespace Infrastructure.Repositores
                 }
 
                // CurrentOrder.Status = "Confirm";
-                CurrentOrder.ConfimOrder();
+                CurrentOrder.IsConfimOrder();
                 
                 _context.Orders.Update(CurrentOrder);
 

@@ -29,6 +29,7 @@ namespace API.Application.Commands.Orders.UpdateOrder
         {
            // get order details by order id 
             var order = await _OrderReposioty.GetAsync(request.Id);
+            order.IsConfimOrder();
             if (order == null)
             {
                 throw new OrderDomainException($"Unable to Find Order realted To {request.Id}");
@@ -54,8 +55,7 @@ namespace API.Application.Commands.Orders.UpdateOrder
             }).ToList();
 
             order.SetItems(items);
-
-           await _OrderReposioty.Update(order);
+            await _OrderReposioty.Update(order);
 
           var _OrderViewModel =  _mapper.Map<OrderViewModel>(order);
           _OrderViewModel.Total = _OrderViewModel.OrderItems.Sum(x => x.Qty * x.Price);
