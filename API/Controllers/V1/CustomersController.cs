@@ -7,7 +7,7 @@ using API.Application.Commands.Flights.GetAllFlights;
 using API.Application.Commands.Orders.ConfirmOrder;
 using API.Application.ViewModels;
 using API.Application.ViewModels.Customers;
-using API.Application.ViewModels.Orders;
+using API.Application.ViewModels.Orders.View;
 using API.Contracts;
 using API.Contracts.V1;
 using AutoMapper;

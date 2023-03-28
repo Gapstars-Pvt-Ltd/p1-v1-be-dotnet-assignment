@@ -65,6 +65,24 @@ namespace Domain.Aggregates.OrderAggregate
             this.Id = id;
         }
 
+        public void SetCutomerId(Guid cutomerId)
+        {
+            this.CustomerId = cutomerId;
+        }
 
+        public void SetFlightId(Guid flightId)
+        {
+            this.FlightId = flightId;
+        }
+
+        public void SetStatus(string status)
+        {
+            this.Status = status;
+        }
+
+        public void SetItems(List<OrderItem> items)
+        {
+            this._items= items;
+        }
     }
 }

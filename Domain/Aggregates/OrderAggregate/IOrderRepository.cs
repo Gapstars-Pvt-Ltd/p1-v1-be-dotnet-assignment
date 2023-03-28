@@ -23,5 +23,9 @@ namespace Domain.Aggregates.OrderAggregate
         Task<List<Order>> GetAllAsync();
 
         Task<List<Order>> GetAllAsyncByCustomer(Guid customerId);
+
+        void RemoveOrderItem(List<OrderItem> items);
+
+
     }
 }

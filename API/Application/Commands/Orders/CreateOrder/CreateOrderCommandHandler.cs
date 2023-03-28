@@ -1,5 +1,5 @@
 ﻿using API.Application.Commands.Airports;
-using API.Application.ViewModels.Orders;
+using API.Application.ViewModels.Orders.View;
 using AutoMapper;
 using Domain.Aggregates.AirportAggregate;
 using Domain.Aggregates.OrderAggregate;

@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System;
 
-namespace API.Application.ViewModels.Orders
+namespace API.Application.ViewModels.Orders.View
 {
     public class OrderViewModel
     {
-        public Guid Id { get;  set; }
+        public Guid Id { get; set; }
         public DateTimeOffset OrderedDate { get; set; }
 
         public string OrderNo { get; set; }
 
-        public Guid CustomerId { get;  set; }
+        public Guid CustomerId { get; set; }
 
-        public Guid FlightId { get;  set; }
+        public Guid FlightId { get; set; }
 
         public string Status { get; set; }
 

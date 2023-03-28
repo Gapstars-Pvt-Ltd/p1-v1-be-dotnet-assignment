@@ -1,4 +1,5 @@
-﻿using API.Application.ViewModels.Orders;
+﻿using API.Application.ViewModels.Orders.Create;
+using API.Application.ViewModels.Orders.View;
 using Domain.Aggregates.AirportAggregate;
 using Domain.Aggregates.OrderAggregate;
 using MediatR;
@@ -15,11 +16,9 @@ namespace API.Application.Commands.Orders.CreateOrder
 
         public Guid FlightId { get; private set; }
 
+        public List<CreateOrderItemViewModel> OrderItems { get; set; }
 
-
-        public List<OrderItemViewModel> OrderItems { get; set; }
-
-        public CreateOrderCommand( Guid customerId, Guid flightId, List<OrderItemViewModel> orderItems)
+        public CreateOrderCommand( Guid customerId, Guid flightId, List<CreateOrderItemViewModel> orderItems)
         {
            
             CustomerId = customerId;

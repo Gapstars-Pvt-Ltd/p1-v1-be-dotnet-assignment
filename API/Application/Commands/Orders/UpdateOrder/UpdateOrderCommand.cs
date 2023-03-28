@@ -1,8 +1,9 @@
-﻿using API.Application.ViewModels.Orders;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System;
 using Domain.Aggregates.OrderAggregate;
 using MediatR;
+using API.Application.ViewModels.Orders.Update;
+using API.Application.ViewModels.Orders.View;
 
 namespace API.Application.Commands.Orders.UpdateOrder
 {
@@ -10,7 +11,7 @@ namespace API.Application.Commands.Orders.UpdateOrder
     {
         public DateTimeOffset OrderedDate { get;  set; }
 
-        public string OrderNo { get; set; }
+       
 
         public Guid CustomerId { get;  set; }
 
@@ -20,12 +21,12 @@ namespace API.Application.Commands.Orders.UpdateOrder
 
         public string Status { get; set; }
 
-        public List<OrderItemViewModel> OrderItems { get; set; }
+        public List<UpdateOrderItemViewModel> OrderItems { get; set; }
 
-        public UpdateOrderCommand(Guid id,DateTimeOffset orderedDate, string orderNo, Guid customerId, Guid flightId,string status, List<OrderItemViewModel> orderItems)
+        public UpdateOrderCommand(Guid id,DateTimeOffset orderedDate,  Guid customerId, Guid flightId,string status, List<UpdateOrderItemViewModel> orderItems)
         {
             OrderedDate = orderedDate;
-            OrderNo = orderNo;
+           
             CustomerId = customerId;
             FlightId = flightId;
             OrderItems = orderItems;

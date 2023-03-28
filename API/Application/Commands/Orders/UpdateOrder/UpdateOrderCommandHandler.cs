@@ -1,5 +1,4 @@
-﻿using API.Application.ViewModels.Orders;
-using Domain.Aggregates.OrderAggregate;
+﻿using Domain.Aggregates.OrderAggregate;
 using MediatR;
 using System.Collections.Generic;
 using System;
@@ -8,50 +7,60 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
 using AutoMapper;
+using Domain.Aggregates.FlightAggregate;
+using API.Application.ViewModels.Orders.View;
+using Domain.Exceptions;
 
 namespace API.Application.Commands.Orders.UpdateOrder
 {
     public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, OrderViewModel>
     {
         private readonly IOrderRepository _OrderReposioty;
+        private readonly IFlightRepository _FlightRepository;
         private readonly IMapper _mapper;
-        public UpdateOrderCommandHandler(IOrderRepository orderReposioty, IMapper mapper = null)
+        public UpdateOrderCommandHandler(IOrderRepository orderReposioty, IMapper mapper = null, IFlightRepository flightRepository = null)
         {
             _OrderReposioty = orderReposioty;
             _mapper = mapper;
+            _FlightRepository = flightRepository;
         }
 
         public async Task<OrderViewModel> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
         {
-
-            var items = request.OrderItems.Select(item => new OrderItemViewModel
+           // get order details by order id 
+            var order = await _OrderReposioty.GetAsync(request.Id);
+            if (order == null)
             {
-                FlightRateId = item.FlightRateId,
-                Price= item.Price,
-                Qty = item.Qty,
-                Id = item.Id,
+                throw new OrderDomainException($"Unable to Find Order realted To {request.Id}");
+            }
+
+            // set private property of order entity
+            order.SetCutomerId(request.CustomerId);
+            order.SetFlightId(request.FlightId);
+            order.SetStatus(request.Status);
+
+            _OrderReposioty.RemoveOrderItem(order.Items.ToList());
+            //get flight rates realted to flight ID
+            var flight =await _FlightRepository.GetAsync(request.FlightId);
+            if (order == null)
+            {
+                throw new OrderDomainException($"Unable to Find Flight Rate Related To {request.FlightId}");
+            }
+            var items = request.OrderItems.Select(oi => new OrderItem
+            {
+                FlightRateId = oi.FlightRateId,
+                Price = Convert.ToDouble(flight.GetRate(oi.FlightRateId).Price.Value),//get price by flight rate ID
+                Qty = oi.Qty
             }).ToList();
 
+            order.SetItems(items);
 
-            var OrderViewModel = new OrderViewModel();
-            OrderViewModel.Status = request.Status;
-            OrderViewModel.OrderNo= request.OrderNo;
-            OrderViewModel.Id = request.Id;
-            OrderViewModel.CustomerId = request.CustomerId;
-            OrderViewModel.FlightId = request.FlightId;
-            OrderViewModel.OrderedDate= request.OrderedDate;
-            OrderViewModel.OrderItems = items;
+           await _OrderReposioty.Update(order);
 
-            var _order = _mapper.Map<Order>(OrderViewModel);
+          var _OrderViewModel =  _mapper.Map<OrderViewModel>(order);
+          _OrderViewModel.Total = _OrderViewModel.OrderItems.Sum(x => x.Qty * x.Price);
 
-            _OrderReposioty.Update(_order);
-            await _OrderReposioty.UnitOfWork.SaveChangesAsync();
-            //map order to orderviewmodel
-           
-            //update total of the order
-            OrderViewModel.Total = OrderViewModel.OrderItems.Sum(x => x.Qty * x.Price);
-
-            return OrderViewModel;
+            return _OrderViewModel;
         }
     }
 }

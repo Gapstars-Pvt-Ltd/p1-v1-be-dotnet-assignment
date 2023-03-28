@@ -2,6 +2,7 @@
 using Domain.Events;
 using Domain.Exceptions;
 using Domain.SeedWork;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using System;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Repositores
@@ -111,15 +113,18 @@ namespace Infrastructure.Repositores
 
         public  async Task<Order> Update(Order order)
         {
-            var Currentorder =  _context.Orders.Where(x => x.Id == order.Id).SingleOrDefault();
-            if (Currentorder.Status== "Confirm")
-            {
-                throw new OrderDomainException("You Cannot Change status of  Confrim order !");
-            }
+           
+            _context.Orders.Update(order);
 
-           _context.Orders.Update(order);
-          // await _context.SaveChangesAsync();
+             await _context.SaveChangesAsync();
+
             return order;
+        }
+
+
+        public void RemoveOrderItem(List<OrderItem> items)
+        {
+            _context.OrderItems.RemoveRange(items);
         }
 
         //todo : move business logic to separate service class 

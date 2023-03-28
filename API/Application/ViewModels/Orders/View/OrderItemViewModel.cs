@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace API.Application.ViewModels.Orders
+namespace API.Application.ViewModels.Orders.View
 {
     public class OrderItemViewModel
     {

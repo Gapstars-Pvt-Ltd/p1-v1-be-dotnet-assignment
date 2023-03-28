@@ -1,5 +1,5 @@
 ﻿using API.Application.Commands.Flights.GetFlight;
-using API.Application.ViewModels.Orders;
+using API.Application.ViewModels.Orders.View;
 using AutoMapper;
 using Domain.Aggregates.FlightAggregate;
 using Domain.Aggregates.OrderAggregate;

@@ -7,7 +7,7 @@ using API.Application.Commands.Orders.GetOrder;
 using API.Application.Commands.Orders.UpdateOrder;
 using API.Application.ViewModels;
 using API.Application.ViewModels.Customers;
-using API.Application.ViewModels.Orders;
+using API.Application.ViewModels.Orders.View;
 using AutoMapper;
 using Domain.Aggregates.OrderAggregate;
 using MediatR;

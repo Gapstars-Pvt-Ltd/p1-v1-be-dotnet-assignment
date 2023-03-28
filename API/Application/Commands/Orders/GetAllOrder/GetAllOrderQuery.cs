@@ -1,4 +1,4 @@
-﻿using API.Application.ViewModels.Orders;
+﻿using API.Application.ViewModels.Orders.View;
 using Domain.Aggregates.OrderAggregate;
 using MediatR;
 using System.Collections.Generic;
