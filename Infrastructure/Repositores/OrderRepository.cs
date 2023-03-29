@@ -37,15 +37,27 @@ namespace Infrastructure.Repositores
         /// <exception cref="FlightDomainException"></exception>
         public Order Add(Order order)
         {
+           var customer =  _context.Customers.Where(x=>x.Id== order.CustomerId).SingleOrDefault();
+            if (customer == null)
+            {
+                throw new CustomerDomainException($"No Customer Record Found With {order.CustomerId}");
+            }
+            var flight = _context.Flights.Where(x=>x.Id== order.FlightId).SingleOrDefault();
+            if (flight == null)
+            {
+                throw new FlightDomainException($"No Flight Record Found With {order.FlightId}");
+            }
+
            foreach(var item in order.Items)
             {
                 var flightRate = _context.FlightRates.Where(x => x.Id == item.FlightRateId).SingleOrDefault();
-                item.Price = Convert.ToDouble(flightRate.Price.Value);
                 if (flightRate == null)
                 {
                     //todo - implement global exception handing method
                     throw new FlightDomainException($"Flight rate Not Found with given ID");
                 }
+                item.Price = Convert.ToDouble(flightRate.Price.Value);
+                
                 
                 if(  flightRate.IsOnStock(item.Qty) == false)
                 {
