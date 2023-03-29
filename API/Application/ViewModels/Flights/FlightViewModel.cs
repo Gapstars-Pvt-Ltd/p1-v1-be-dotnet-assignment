@@ -13,6 +13,6 @@ namespace API.Application.ViewModels.Flights
         public DateTimeOffset Departure { get; private set; }
         public DateTimeOffset Arrival { get; private set; }
 
-        public List<FlightRate> Rates { get; set; }
+        public List<FlightRateViewModel> Rates { get; set; }
     }
 }
