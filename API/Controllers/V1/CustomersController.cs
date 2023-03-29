@@ -12,12 +12,14 @@ using API.Contracts;
 using API.Contracts.V1;
 using AutoMapper;
 using Domain.Aggregates.OrderAggregate;
+using Domain.Aggregates.CustomerAggregate;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 
 
 namespace API.Controllers.V1
@@ -57,7 +59,7 @@ namespace API.Controllers.V1
         {
             var customers = await _mediator.Send(new GetAllCustomersQuery { });
 
-            return Ok(customers);
+            return Ok(_mapper.Map<List<Customer>, List<CustomerViewModel>>(customers));
         }
 
         // This action method handles the HTTP GET request to retrieve a customer by Id.
@@ -79,7 +81,7 @@ namespace API.Controllers.V1
             var order = await _mediator.Send(new GetOrdersByCutomerQuery { CustomerId = id });
 
             // Returns a response with all orders for the given customer as the content, or a "not found" error if no orders exist.
-            return order.Count > 0 ? Ok(_mapper.Map<List<Order>, List<OrderViewModel>>(order)) : NotFound("Order Not Found With Given Id");
+            return order.Count > 0 ? Ok(order) : NotFound("Order Not Found With Given Id");
         }
     }
 }
