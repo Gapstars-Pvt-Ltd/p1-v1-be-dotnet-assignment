@@ -41,6 +41,23 @@ namespace API.Migrations
                     b.ToTable("Airports");
                 });
 
+            modelBuilder.Entity("Domain.Aggregates.CustomerAggregate.Customer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Customers");
+                });
+
             modelBuilder.Entity("Domain.Aggregates.FlightAggregate.Flight", b =>
                 {
                     b.Property<Guid>("Id")
@@ -91,6 +108,61 @@ namespace API.Migrations
                     b.ToTable("FlightRates");
                 });
 
+            modelBuilder.Entity("Domain.Aggregates.OrderAggregate.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("FlightId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("OrderNo")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("OrderedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("FlightId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Domain.Aggregates.OrderAggregate.OrderItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("FlightRateId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("Qty")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItems");
+                });
+
             modelBuilder.Entity("Domain.Aggregates.FlightAggregate.Flight", b =>
                 {
                     b.HasOne("Domain.Aggregates.AirportAggregate.Airport", null)
@@ -132,6 +204,30 @@ namespace API.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("FlightRateId");
                         });
+                });
+
+            modelBuilder.Entity("Domain.Aggregates.OrderAggregate.Order", b =>
+                {
+                    b.HasOne("Domain.Aggregates.CustomerAggregate.Customer", null)
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Aggregates.FlightAggregate.Flight", null)
+                        .WithMany()
+                        .HasForeignKey("FlightId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Aggregates.OrderAggregate.OrderItem", b =>
+                {
+                    b.HasOne("Domain.Aggregates.OrderAggregate.Order", null)
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
